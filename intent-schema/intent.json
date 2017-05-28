@@ -1,0 +1,356 @@
+{
+  "intents": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": []
+    },
+    {
+      "name": "AskParkingInfo",
+      "samples": [
+        "Tell me about {LotType} ",
+        "Tell me about {LotType}  parking",
+        "Tell me about {LotType} parking lot",
+        "Tell me about {LotName} ",
+        "Tell me about lot {LotName} ",
+        "tell me about parking lot {LotName} "
+      ],
+      "slots": [
+        {
+          "name": "LotName",
+          "type": "LotName",
+          "samples": []
+        },
+        {
+          "name": "LotType",
+          "type": "LotType",
+          "samples": []
+        }
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "LotName",
+      "values": [
+        {
+          "name": {
+            "value": "C"
+          }
+        },
+        {
+          "name": {
+            "value": "N"
+          }
+        },
+        {
+          "name": {
+            "value": "W"
+          }
+        },
+        {
+          "name": {
+            "value": "X"
+          }
+        },
+        {
+          "name": {
+            "value": "OPT"
+          }
+        },
+        {
+          "name": {
+            "value": "DWE-SCH"
+          }
+        },
+        {
+          "name": {
+            "value": "E5-ECH"
+          }
+        },
+        {
+          "name": {
+            "value": "PAC-SLC"
+          }
+        },
+        {
+          "name": {
+            "value": "V1-UC"
+          }
+        },
+        {
+          "name": {
+            "value": "MKV-V1"
+          }
+        },
+        {
+          "name": {
+            "value": "EC2-EC3"
+          }
+        },
+        {
+          "name": {
+            "value": "O"
+          }
+        },
+        {
+          "name": {
+            "value": "K"
+          }
+        },
+        {
+          "name": {
+            "value": "R"
+          }
+        },
+        {
+          "name": {
+            "value": "L"
+          }
+        },
+        {
+          "name": {
+            "value": "B"
+          }
+        },
+        {
+          "name": {
+            "value": "T"
+          }
+        },
+        {
+          "name": {
+            "value": "H"
+          }
+        },
+        {
+          "name": {
+            "value": "A"
+          }
+        },
+        {
+          "name": {
+            "value": "Q"
+          }
+        },
+        {
+          "name": {
+            "value": "M"
+          }
+        },
+        {
+          "name": {
+            "value": "D"
+          }
+        },
+        {
+          "name": {
+            "value": "J"
+          }
+        },
+        {
+          "name": {
+            "value": "S"
+          }
+        },
+        {
+          "name": {
+            "value": "V"
+          }
+        },
+        {
+          "name": {
+            "value": "CL"
+          }
+        },
+        {
+          "name": {
+            "value": "HV"
+          }
+        },
+        {
+          "name": {
+            "value": "UWP"
+          }
+        },
+        {
+          "name": {
+            "value": "CGR"
+          }
+        },
+        {
+          "name": {
+            "value": "STP"
+          }
+        },
+        {
+          "name": {
+            "value": "REN"
+          }
+        },
+        {
+          "name": {
+            "value": "STJ"
+          }
+        },
+        {
+          "name": {
+            "value": "OV"
+          }
+        },
+        {
+          "name": {
+            "value": "NH"
+          }
+        },
+        {
+          "name": {
+            "value": "EV3"
+          }
+        },
+        {
+          "name": {
+            "value": "V1-MKV"
+          }
+        },
+        {
+          "name": {
+            "value": "BMH-ERC"
+          }
+        },
+        {
+          "name": {
+            "value": "M3-MC"
+          }
+        },
+        {
+          "name": {
+            "value": "Mc-M3"
+          }
+        },
+        {
+          "name": {
+            "value": "COM-CSB"
+          }
+        },
+        {
+          "name": {
+            "value": "DC-GSC"
+          }
+        },
+        {
+          "name": {
+            "value": "E5"
+          }
+        },
+        {
+          "name": {
+            "value": "UWC"
+          }
+        },
+        {
+          "name": {
+            "value": "UWC-UWT"
+          }
+        },
+        {
+          "name": {
+            "value": "USC"
+          }
+        },
+        {
+          "name": {
+            "value": "UNC-UET"
+          }
+        },
+        {
+          "name": {
+            "value": "UEC"
+          }
+        },
+        {
+          "name": {
+            "value": "TC-SCH"
+          }
+        },
+        {
+          "name": {
+            "value": "PAS-HH"
+          }
+        },
+        {
+          "name": {
+            "value": "LIB-ML"
+          }
+        },
+        {
+          "name": {
+            "value": "LIB-NH"
+          }
+        },
+        {
+          "name": {
+            "value": "DC-C2"
+          }
+        },
+        {
+          "name": {
+            "value": "ML-EV3"
+          }
+        },
+        {
+          "name": {
+            "value": "PAC-LHI-UC"
+          }
+        },
+        {
+          "name": {
+            "value": "E6-ECH"
+          }
+        }
+      ]
+    },
+    {
+      "name": "LotType",
+      "values": [
+        {
+          "name": {
+            "value": "meter"
+          }
+        },
+        {
+          "name": {
+            "value": "permit"
+          }
+        },
+        {
+          "name": {
+            "value": "visitor"
+          }
+        },
+        {
+          "name": {
+            "value": "short term"
+          }
+        },
+        {
+          "name": {
+            "value": "accessible"
+          }
+        },
+        {
+          "name": {
+            "value": "motorcycle"
+          }
+        }
+      ]
+    }
+  ]
+}
