@@ -136,6 +136,16 @@ function generateSpeechForSingleLot(lot_data) {
 }
 
 function addSpeakTag(speech) {
+	// Remodify the text, so that it satisfies SSML requirement
+	var speech_len = speech.length;
+	for (var i = 0; i < speech_len; i++) {
+		if (speech[i] == '&') {
+			speech = speech.substring(0, i) + " and " + speech.substring(i+1, speech_len);
+		}
+		else if (speech[i] == '/') {
+			speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
+		}
+	}
 	return ("<speak> " + speech + "</speak>");
 }
 
