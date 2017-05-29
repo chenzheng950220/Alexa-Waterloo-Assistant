@@ -1,0 +1,14 @@
+{
+	"name": "alexa-wat-park-package",
+	"version": "1.0.0",
+	"description": "Real-time parking update developed on Alexa machines",
+	"scripts": {
+		"test": "echo \"ERROR: No test scripts specified! \" && exit 1"
+	},
+	"author": "Zheng Chen",
+	"license": "MIT",
+	"dependencies": {
+		"alexa-sdk": "^1.0.9",
+		"request": "^2.81.0"
+	}
+}

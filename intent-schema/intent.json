@@ -20,7 +20,11 @@
         "Tell me about {LotType} parking lot",
         "Tell me about {LotName} ",
         "Tell me about lot {LotName} ",
-        "tell me about parking lot {LotName} "
+        "tell me about parking lot {LotName} ",
+        "Tell me about {LotName} lot",
+        "tell me about {LotName} parking lot",
+        "tell me about {LotType} lot",
+        "tell me about lot {LotType} "
       ],
       "slots": [
         {
@@ -34,6 +38,19 @@
           "samples": []
         }
       ]
+    },
+    {
+      "name": "AskStudentParkingInfo",
+      "samples": [
+        "How's student parking",
+        "What's student parking status",
+        "What's the status of student parking",
+        "How's student parking look like",
+        "Give me student parking status",
+        "Student parking status",
+        "student parking"
+      ],
+      "slots": []
     }
   ],
   "types": [

@@ -19,7 +19,7 @@ function getUrl(request_type) { // get appropriate url
     var index = request_types.indexOf(request_type);
     if (index == -1) {
         console.log("ERROR: Wrong type passed in request_type: "+request_type);
-        return "ERROR";
+        return "BAD_REQ_TYPE";
     }
     else if (index == 0) {
         return (base_url + "watpark.json?key=" + token);
@@ -30,11 +30,13 @@ function getUrl(request_type) { // get appropriate url
 }
 
 function getJSON(callback, request_type) {
-    request.get(getUrl(request_type), function(error, response, body) {
+    var url = getUrl(request_type);
+    if (url.substring(0,5) != "https") { callback(url); }
+    request.get(url, function(error, response, body) {
         if (response.statusCode != 200) {
             console.log(getUrl(request_type));
             console.log("ERROR: Http request error: "+response.statusCode);
-            callback("ERROR");
+            callback("BAD_REQ");
         }
         var d = JSON.parse(body);
         if (d != null) {

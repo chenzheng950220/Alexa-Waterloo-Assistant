@@ -10,9 +10,17 @@ module.exports = {
 };
 
 function generateGeneralSpeech(type) {
-	if (type == "json_error") {
-		return ("Sorry, but I'm having trouble fetching information from the network. " +
-			"Would mind asking the question again? ");
+	if (type == "ERROR") { // unhandled error
+		return ("Sorry, but something is wrong with my code. " +
+			"Would you mind repeating your question and try again? ");
+	}
+	else if (type == "BAD_REQ" || type == "BAD_JSON") {
+		return ("Sorry, but the request for API was a failure. " +
+			"Can you make sure that you have the correct access token? ");
+	}
+	else if (type == "BAD_REQ_TYPE") {
+		return ("Sorry, but I did not recognize the slot type you provided. " +
+			"Would you mind repeating the question for me? ");
 	}
 }
 

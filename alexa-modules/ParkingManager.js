@@ -16,7 +16,10 @@ function getStudentParkingInfo(callback, intent) {
 	api_manager.getJSON(function(data) {
 		var speech_out = "";
 		if (data == "ERROR") {
-			callback(speech_manager.generateGeneralSpeech("json_error"));
+			callback(speech_manager.generateGeneralSpeech("BAD_JSON"));
+		}
+		else if (data.data === undefined) {
+			callback(speech_manager.generateGeneralSpeech(data));
 		}
 		speech_out += speech_manager.generateSpeechForStudentParking(data,intent);
 		callback(speech_out);

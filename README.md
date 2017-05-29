@@ -9,6 +9,14 @@
 ## What will be done?
 Check out the [issues](https://github.com/chenzheng950220/AlexaWatPark/issues) tab to see what's on the roadmap.
 
+## How to use?
+You need to first find a place to [host the server](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-web-service). I personally chose AWS Lambda since it's easier to hook up with AVS services from Alexa Developer Kit. However, hosting your own server is also an option, which requires a secure https link.
+
+After making the choice, you need to install npm dependencies in a bash shell with command
+```bash
+npm install
+```
+
 ## Resources
 * [Alexa Developer Kit](https://developer.amazon.com/alexa-skills-kit)
 * [Node.JS](https://nodejs.org/en/)
