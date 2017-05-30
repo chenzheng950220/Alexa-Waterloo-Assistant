@@ -144,13 +144,13 @@ function generateSpeechForLotType(data, intent) {
 	}
 	var speech_out = "";
 	speech_out += ("There are " + total_lot + " " + lot_type + " parking lots. ");
-	speech_out += "Here is a list of those lots. ";
+	speech_out += ("Lot " + "<break time=\"0.01s\"/>");
 	for (var i = 0; i < total_lot; i++) {
-		speech_out += ("Lot " + "<break time=\"0.01s\"/>");
 		speech_out += (data.data[i].name + ". ");
 		speech_out += "<break time=\"0.3s\"/>";
 	}
-	speech_out += "Would you like to hear the detailed information on each lots? ";
+	speech_out += "You can also refer to the card for detailed information on each lot. ";
+	speech_out += "But I can also read you those details, would you like to hear it? ";
 	return addSpeakTag(speech_out);
 }
 
