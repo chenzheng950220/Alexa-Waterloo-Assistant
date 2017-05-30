@@ -47,6 +47,6 @@ function getInfoForParkingLot(callback, intent) {
 		else {
 			throw "ERROR: Not implemented yet! "; // FIX ME!
 		}
-		callback(speech_out);
+		callback ([data, speech_out]);
 	}, request_type);
 }

@@ -6,6 +6,7 @@ var APP_ID = 'amzn1.ask.skill.1db13f3d-b9b8-4cef-8145-b9086748dc9b';
 var SKILL_NAME = 'AlexaWatPark';
 var alert_message = "";
 var parking_manager = require('./alexa-modules/ParkingManager.js');
+var speech_manager = require('./alexa-modules/SpeechManager.js');
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
@@ -67,13 +68,16 @@ function onIntent(intentRequest, session, context, callback) {
         handleStopIntent(callback);
     }
     else if (intentName == "AMAZON.CancelIntent") {
-        return;
+        handleStopIntent(callback);
     }
     else if (intentName == "AskParkingInfo") {
         handleAskParkingInfoIntent(intent, session, context, callback);
     }
-    else if (intentName = "AskStudentParkingInfo") {
+    else if (intentName == "AskStudentParkingInfo") {
         handleAskStudentParkingIntent(intent, session, context, callback);
+    }
+    else if (intentName == "YesIntent") {
+        handleYesIntent(intent, session, context, callback);
     }
     else {
          throw "Invalid intent";
@@ -106,8 +110,9 @@ function handleStopIntent(callback) {
 }
 
 function handleAskParkingInfoIntent(intent, session, context, callback) {
-    parking_manager.getInfoForParkingLot(function(speech_output) {
-        callback(null, buildSpeechletResponseSimple(null, speech_output));
+    parking_manager.getInfoForParkingLot(function(ret_val) {
+        callback(ret_val[0], buildSpeechletResponseSession(null, ret_val[1], false));
+        // do not end session here, in case user wants to here detail info on parking type
     }, intent);
 }
 
@@ -115,6 +120,16 @@ function handleAskStudentParkingIntent(intent, session, context, callback) {
     parking_manager.getStudentParkingInfo(function(speech_output) {
         callback(null, buildSpeechletResponseSimple(null, speech_output));
     }, intent);
+}
+
+function handleYesIntent(intent, session, context, callback) {
+    var speech_out = "";
+    if (session.new) { // no previous session detected
+        speech_out = speech_manager.generateGeneralSpeech("NO_PREV_SESSION");
+        callback(null, buildSpeechletResponseSession(null, speech_out, true));
+    }
+    speech_out = speech_manager.generateSpeechForDetailLotType(session.attributes);
+    callback(null, buildSpeechletResponseSession(null, speech_out, true))
 }
 
 // ------- Helper functions to build responses for Alexa -------
@@ -131,25 +146,16 @@ function buildSpeechletResponseSimple(card, output) {
     return ret_val;
 }
 
-function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
-    return {
+function buildSpeechletResponseSession(card, output, session_end) {
+    var ret_val = {
         outputSpeech: {
             type: "SSML",
             ssml: output
         },
-        card: {
-            type: "Simple",
-            title: title,
-            content: output
-        },
-        reprompt: {
-            outputSpeech: {
-                type: "PlainText",
-                text: repromptText
-            }
-        },
-        shouldEndSession: shouldEndSession
+        shouldEndSession: session_end
     };
+    ret_val.card = card;
+    return ret_val;
 }
 
 function buildResponse(sessionAttributes, speechletResponse) {
@@ -159,5 +165,6 @@ function buildResponse(sessionAttributes, speechletResponse) {
         response: speechletResponse
     };
 }
+
 
 

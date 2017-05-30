@@ -6,7 +6,8 @@ This module generates complete sentences.
 module.exports = {
     generateSpeechForLotType: generateSpeechForLotType,
     generateGeneralSpeech: generateGeneralSpeech,
-    generateSpeechForStudentParking: generateSpeechForStudentParking
+    generateSpeechForStudentParking: generateSpeechForStudentParking,
+    generateSpeechForDetailLotType: generateSpeechForDetailLotType
 };
 
 function generateGeneralSpeech(type) {
@@ -21,6 +22,18 @@ function generateGeneralSpeech(type) {
 	else if (type == "BAD_REQ_TYPE") {
 		return ("Sorry, but I did not recognize the slot type you provided. " +
 			"Would you mind repeating the question for me? ");
+	}
+	else if (type == "NO_RES_MORE_INFO") {
+		return ("Sorry, but I didn't hear your answer. If you would like to know " +
+			"more information on the lot type you were asking, please say yes. " +
+			"Otherwise, say stop. ");
+	}
+	else if (type == "NO_PREV_SESSION") {
+		return ("Sorry, I didn't get that. Would you mind starting from the beginning? ");
+	}
+	else if (type == "WELCOME") {
+		return ("Hello! Welcome to What Park! You can ask me anything regarding to parking at "+
+			"the University of Waterloo. For example, tell me about visitor parking. ");
 	}
 }
 
@@ -52,7 +65,11 @@ function generateSpeechForStudentParking(data, intent) {
 			speech_out += full_lot[i];
 			speech_out += ", ";
 		}
-		speech_out += "are full. However, there are still some parking capacities in lot ";
+		if (full_lot.length == 1) {
+			speech_out += "is ";
+		}
+		else { speech_out += "are "; }
+		speech_out += "full. However, there are still some parking capacities in lot ";
 		for (var i = 0; i < not_full_lot.length; i++) {
 			speech_out += not_full_lot[i];
 			if (i == (not_full_lot.length - 1)) { speech_out += ". "; }
@@ -129,7 +146,20 @@ function generateSpeechForLotType(data, intent) {
 	speech_out += ("There are " + total_lot + " " + lot_type + " parking lots. ");
 	speech_out += "Here is a list of those lots. ";
 	for (var i = 0; i < total_lot; i++) {
-		speech_out += generateSpeechForSingleLot(data.data[i]);
+		speech_out += ("Lot " + "<break time=\"0.01s\"/>");
+		speech_out += (data.data[i].name + ". ");
+		speech_out += "<break time=\"0.3s\"/>";
+	}
+	speech_out += "Would you like to hear the detailed information on each lots? ";
+	return addSpeakTag(speech_out);
+}
+
+function generateSpeechForDetailLotType(session_attr) {
+	// user request a detailed information on a parking type
+	var speech_out = "";
+	var total_lot = session_attr.data.length;
+	for (var i = 0; i < total_lot; i++) {
+		speech_out += generateSpeechForSingleLot(session_attr.data[i]);
 	}
 	return addSpeakTag(speech_out);
 }
@@ -151,6 +181,9 @@ function addSpeakTag(speech) {
 			speech = speech.substring(0, i) + " and " + speech.substring(i+1, speech_len);
 		}
 		else if (speech[i] == '/') {
+
+			if (i != 0 && speech[i-1] == '<') { continue; }
+			if (i != (speech_len-1) && speech[i+1] == '>') { continue; }
 			speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
 		}
 	}
