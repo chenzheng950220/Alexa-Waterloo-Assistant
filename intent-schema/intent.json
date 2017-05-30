@@ -10,7 +10,11 @@
     },
     {
       "name": "AMAZON.StopIntent",
-      "samples": []
+      "samples": [
+        "No",
+        "No thanks",
+        "No thank you"
+      ]
     },
     {
       "name": "AskParkingInfo",
@@ -49,6 +53,17 @@
         "Give me student parking status",
         "Student parking status",
         "student parking"
+      ],
+      "slots": []
+    },
+    {
+      "name": "YesIntent",
+      "samples": [
+        "Sure",
+        "Yes",
+        "Please",
+        "Yes please",
+        "OK"
       ],
       "slots": []
     }
