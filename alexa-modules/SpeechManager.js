@@ -1,4 +1,4 @@
-/********************************
+/*********************************
 Parking Manager for Alexa
 This module generates complete sentences.
 *********************************/
@@ -10,60 +10,36 @@ module.exports = {
     generateSpeechForDetailLotType: generateSpeechForDetailLotType
 };
 
-var available_lot_type = ["permit", "motorcycle", "accessible",
+const available_lot_type = ["permit", "motorcycle", "accessible",
 	"short term", "visitor", "permit", "meter"];
 
-function generateGeneralSpeech(type) {
-	if (type == "ERROR") { // unhandled error
-		return ("Sorry, but something is wrong with my code. " +
-			"Would you mind repeating your question and try again? ");
-	}
-	else if (type == "BAD_REQ" || type == "BAD_JSON") {
-		return ("Sorry, but the request for API was a failure. " +
-			"Can you make sure that you have the correct access token? ");
-	}
-	else if (type == "BAD_REQ_TYPE") {
-		return ("Sorry, but I did not recognize the slot type you provided. " +
-			"Would you mind repeating the question for me? ");
-	}
-	else if (type == "NO_RES_MORE_INFO") {
-		return ("Sorry, but I didn't hear your answer. If you would like to know " +
-			"more information on the lot type you were asking, please say yes. " +
-			"Otherwise, say stop. ");
-	}
-	else if (type == "NO_PREV_SESSION") {
-		return ("Sorry, I didn't get that. Would you mind starting from the beginning? ");
-	}
-	else if (type == "WELCOME") {
-		return ("Hello! Welcome to What Park! You can ask me anything regarding to parking at "+
-			"the University of Waterloo. For example, tell me about visitor parking. " +
-			"Or, how's student parking look like? " +
-			"Now, what can I help you with? ");
-	}
-	else if (type == "HELP") {
-		var speech_out = ("You can ask about a specific lot type by asking, Ask What Park about permit parking. " +
-			"I can handle lot types ");
-		for (var i = 0; i < available_lot_type.length; i++) {
-			speech_out += available_lot_type[i];
-			speech_out += ", ";
-		}
-		speech_out += ("You can also ask for real-time update on student parking, by asking. " +
-			"Ask What Park how's student parking look like? " +
-			"Now, what can I help you with? ");
-		return speech_out;
-	}
-	else if (type == "LOT_INFO_MISS") {
-		return ("Sorry, but I did not recognize neither the lot type nor the lot name. " + 
-			"Would you mind repeating the question again? ");
-	}
-	else if (type == "LOT_INFO_TWO") {
-		return ("Sorry, but I received both lot type and lot name. However, I can " +
-			"only handle with one input. Would you mind repeating the question? ");
-	}
-	else {
-		return ("Sorry, I'm having trouble handling your request. " +
-			"Would you mind repeating the question? ");
-	}
+const SPEECH_ERROR = "Sorry, but something is wrong with my code. Would you mind repeating your question and try again? ";
+const SPEECH_BAD_REQ = "Sorry, but the request for API was a failure. Can you make sure that you have the correct access token? ";
+const SPEECH_BAD_REQ_TYPE = "Sorry, but I did not recognize the slot type you provided. Would you mind repeating the question for me? ";
+const SPEECH_NO_RES_MORE_INFO = "Sorry, but I didn't hear your answer. If you would like to know more information on the lot type you were asking, please say yes. Otherwise, say stop. ";
+const SPEECH_NO_PREV_SESSION = "Sorry, I didn't get that. Would you mind starting from the beginning? ";
+const SPEECH_WELCOME = "Hello! Welcome to What Park! You can ask me anything regarding to parking at the University of Waterloo. For example, tell me about visitor parking. Or, how's student parking look like? Now, what can I help you with? ";
+const SPEECH_LOT_INFO_MISS = "Sorry, but I did not recognize neither the lot type nor the lot name. Would you mind repeating the question again? ";
+const SPEECH_LOT_INFO_TWO = "Sorry, but I received both lot type and lot name. However, I can only handle with one input. Would you mind repeating the question? ";
+const SPEECH_HELP = ("You can ask about a specific lot type by asking, Ask What Park about permit parking. I can handle the following lot types. " + 
+	"permit, motorcycle, accessible, short term, visitor, permit, meter. You can also ask for real-time update on student parking, by asking. " +
+	"Ask What Park how's student parking look like? Now, what can I help you with? ");
+
+
+
+function generateGeneralSpeech() {
+	var dict = {
+		SPEECH_ERROR: SPEECH_ERROR,
+		SPEECH_BAD_REQ: SPEECH_BAD_REQ,
+		SPEECH_BAD_REQ_TYPE: SPEECH_BAD_REQ_TYPE,
+		SPEECH_NO_RES_MORE_INFO: SPEECH_NO_RES_MORE_INFO,
+		SPEECH_NO_PREV_SESSION: SPEECH_NO_PREV_SESSION,
+		SPEECH_WELCOME: SPEECH_WELCOME,
+		SPEECH_LOT_INFO_MISS: SPEECH_LOT_INFO_MISS,
+		SPEECH_LOT_INFO_TWO: SPEECH_LOT_INFO_TWO,
+		SPEECH_HELP: SPEECH_HELP
+	};
+	return dict;
 }
 
 function generateSpeechForStudentParking(data, intent) {
@@ -85,13 +61,13 @@ function generateSpeechForStudentParking(data, intent) {
 	}
 	else if (lot_overall_status == 3) {
 		var full_lot = []; var not_full_lot = [];
-		for (var i = 0; i < 4; i++) {
-			if (lot_status[i] >= 4) { full_lot.push(lot_name[i]); }
-			else { not_full_lot.push(lot_name[i]); }
+		for (var j = 0; j < 4; j++) {
+			if (lot_status[j] >= 4) { full_lot.push(lot_name[j]); }
+			else { not_full_lot.push(lot_name[j]); }
 		}
 		speech_out += "Lot ";
-		for (var i = 0; i < full_lot.length; i++) {
-			speech_out += full_lot[i];
+		for (var k = 0; k < full_lot.length; k++) {
+			speech_out += full_lot[k];
 			speech_out += ", ";
 		}
 		if (full_lot.length == 1) {
@@ -99,9 +75,9 @@ function generateSpeechForStudentParking(data, intent) {
 		}
 		else { speech_out += "are "; }
 		speech_out += "full. However, there are still some parking capacities in lot ";
-		for (var i = 0; i < not_full_lot.length; i++) {
-			speech_out += not_full_lot[i];
-			if (i == (not_full_lot.length - 1)) { speech_out += ". "; }
+		for (var l = 0; l < not_full_lot.length; l++) {
+			speech_out += not_full_lot[l];
+			if (l == (not_full_lot.length - 1)) { speech_out += ". "; }
 			else { speech_out += ", "; }
 		}
 	}
@@ -211,11 +187,10 @@ function addSpeakTag(speech) {
 		}
 		else if (speech[i] == '/') {
 
-			if (i != 0 && speech[i-1] == '<') { continue; }
+			if (i !== 0 && speech[i-1] == '<') { continue; }
 			if (i != (speech_len-1) && speech[i+1] == '>') { continue; }
 			speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
 		}
 	}
 	return ("<speak> " + speech + "</speak>");
 }
-

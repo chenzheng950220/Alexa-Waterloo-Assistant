@@ -21,7 +21,7 @@ function getUrl(request_type) { // get appropriate url
         console.log("ERROR: Wrong type passed in request_type: "+request_type);
         return "BAD_REQ_TYPE";
     }
-    else if (index == 0) {
+    else if (index === 0) {
         return (base_url + "watpark.json?key=" + token);
     }
     else {
@@ -39,7 +39,7 @@ function getJSON(callback, request_type) {
             callback("BAD_REQ");
         }
         var d = JSON.parse(body);
-        if (d != null) {
+        if (d !== null) {
             callback(d);
         }
         else {

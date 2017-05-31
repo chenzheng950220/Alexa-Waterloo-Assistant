@@ -17,10 +17,10 @@ function getStudentParkingInfo(callback, intent) {
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = {};
 		if (data == "ERROR") {
-			callback([null, speech_manager.generateGeneralSpeech("BAD_JSON")]);
+			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
 		}
 		else if (data.data === undefined) {
-			callback([null, speech_manager.generateGeneralSpeech(data)]);
+			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
 		}
 		card = card_manager.generateCardForStudentParking(data, intent);
 		speech_out += speech_manager.generateSpeechForStudentParking(data,intent);
@@ -32,7 +32,7 @@ function getInfoForParkingLot(callback, intent) {
 	var request_type = ""; var lot_type = false;
 	if (intent.slots.LotType.value === undefined &&
 		intent.slots.LotName.value === undefined) {
-		callback([null, speech_manager.generateGeneralSpeech("LOT_INFO_MISS"), null]);
+		callback([null, speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_MISS, null]);
 	}
 	else if (intent.slots.LotType.value !== undefined &&
 		intent.slots.LotName.value === undefined) {
@@ -45,12 +45,12 @@ function getInfoForParkingLot(callback, intent) {
 		throw "ERROR: Not implemented yet! "; // FIX ME!
 	}
 	else {
-		callback([null, speech_manager.generateGeneralSpeech("LOT_INFO_TWO"), null]);
+		callback([null, speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_TWO, null]);
 	}
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = null;
 		if (data == "ERROR") {
-			callback([null, speech_manager.generateGeneralSpeech("json_error"), null]);
+			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ, null]);
 		}
 		if (lot_type) {
 			speech_out += speech_manager.generateSpeechForLotType(data, intent);

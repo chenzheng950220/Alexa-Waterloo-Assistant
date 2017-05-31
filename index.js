@@ -95,12 +95,12 @@ function onSessionEnded(sessionEndedRequest, session) {
 // ------- Skill specific logic -------
 
 function getWelcomeResponse(callback) {
-    var speech_output = speech_manager.generateGeneralSpeech("WELCOME");
+    var speech_output = speech_manager.generateGeneralSpeech().SPEECH_WELCOME;
     callback(null, buildSpeechletResponseSession(null, speech_output, false));
 }
 
 function handleHelpIntent(callback) {
-    var speech_output = speech_manager.generateGeneralSpeech("HELP");
+    var speech_output = speech_manager.generateGeneralSpeech().SPEECH_HELP;
     callback(null, buildSpeechletResponseSession(null, speech_output, false));
 }
 
@@ -127,11 +127,11 @@ function handleAskStudentParkingIntent(intent, session, context, callback) {
 function handleYesIntent(intent, session, context, callback) {
     var speech_out = "";
     if (session.new) { // no previous session detected
-        speech_out = speech_manager.generateGeneralSpeech("NO_PREV_SESSION");
+        speech_out = speech_manager.generateGeneralSpeech().SPEECH_NO_PREV_SESSION;
         callback(null, buildSpeechletResponseSession(null, speech_out, true));
     }
     speech_out = speech_manager.generateSpeechForDetailLotType(session.attributes);
-    callback(null, buildSpeechletResponseSession(null, speech_out, true))
+    callback(null, buildSpeechletResponseSession(null, speech_out, true));
 }
 
 // ------- Helper functions to build responses for Alexa -------
