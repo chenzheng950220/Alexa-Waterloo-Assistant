@@ -8,6 +8,17 @@ var alert_message = "";
 var parking_manager = require('./alexa-modules/ParkingManager.js');
 var speech_manager = require('./alexa-modules/SpeechManager.js');
 
+const REQ_LAUNCH = "LaunchRequest";
+const REQ_INT = "IntentRequest";
+const REQ_SESSION_END = "SessionEndedRequest";
+const INT_AMAZON_HELP = "AMAZON.HelpIntent";
+const INT_AMAZON_STOP = "AMAZON.StopIntent";
+const INT_AMAZON_CANCEL = "AMAZON.CancelIntent";
+const INT_ASK_PK = "AskParkingInfo";
+const INT_ASK_STD_PK = "AskStudentParkingInfo";
+const INT_YES = "YesIntent";
+
+
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
 exports.handler = function (event, context) {
@@ -16,22 +27,30 @@ exports.handler = function (event, context) {
             onSessionStarted({requestId: event.request.requestId}, event.session);
         }
 
-        if (event.request.type === "LaunchRequest") {
-            onLaunch(event.request,
-                event.session,
-                function callback(sessionAttributes, speechletResponse) {
-                    context.succeed(buildResponse(sessionAttributes, speechletResponse));
-                });
-        } else if (event.request.type === "IntentRequest") {
-            console.log(util.inspect(event, false, null));
-            onIntent(event.request,
-                event.session, event.context,
-                function callback(sessionAttributes, speechletResponse) {
-                    context.succeed(buildResponse(sessionAttributes, speechletResponse));
-                });
-        } else if (event.request.type === "SessionEndedRequest") {
-            onSessionEnded(event.request, event.session);
-            context.succeed();
+        switch (event.request.type) {
+            case REQ_LAUNCH:
+                onLaunch(event.request, event.session,
+                    function callback(sessionAttributes, speechletResponse) {
+                        context.succeed(buildResponse(sessionAttributes, speechletResponse));
+                    });
+                break;
+
+            case REQ_INT:
+                console.log(util.inspect(event, false, null));
+                onIntent(event.request,
+                    event.session, event.context,
+                    function callback(sessionAttributes, speechletResponse) {
+                        context.succeed(buildResponse(sessionAttributes, speechletResponse));
+                    });
+                break;
+
+            case REQ_SESSION_END:
+                onSessionEnded(event.request, event.session);
+                context.succeed();
+                break;
+
+            default:
+                throw "ERROR: Bad Request from AVS! ";
         }
     } catch (e) {
         context.fail("Exception: " + e);
@@ -61,26 +80,33 @@ function onIntent(intentRequest, session, context, callback) {
     var intentName = intentRequest.intent.name;
 
     // dispatch custom intents to handlers here
-    if (intentName == "AMAZON.HelpIntent") {
-        handleHelpIntent(callback);
-    }
-    else if (intentName == "AMAZON.StopIntent") {
-        handleStopIntent(callback);
-    }
-    else if (intentName == "AMAZON.CancelIntent") {
-        handleStopIntent(callback);
-    }
-    else if (intentName == "AskParkingInfo") {
-        handleAskParkingInfoIntent(intent, session, context, callback);
-    }
-    else if (intentName == "AskStudentParkingInfo") {
-        handleAskStudentParkingIntent(intent, session, context, callback);
-    }
-    else if (intentName == "YesIntent") {
-        handleYesIntent(intent, session, context, callback);
-    }
-    else {
-         throw "Invalid intent";
+    switch (intentName) {
+        case INT_AMAZON_HELP:
+            handleHelpIntent(callback);
+            break;
+
+        case INT_AMAZON_STOP:
+            handleStopIntent(callback);
+            break;
+
+        case INT_AMAZON_CANCEL:
+            handleStopIntent(callback);
+            break;
+
+        case INT_ASK_PK:
+            handleAskParkingInfoIntent(intent, session, context, callback);
+            break;
+
+        case INT_ASK_STD_PK:
+            handleAskStudentParkingIntent(intent, session, context, callback);
+            break; 
+
+        case INT_YES:
+            handleYesIntent(intent, session, context, callback);
+            break;
+
+        default:
+            throw "ERROR: Invalid intent";
     }
 }
 
