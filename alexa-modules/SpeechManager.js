@@ -10,6 +10,9 @@ module.exports = {
     generateSpeechForDetailLotType: generateSpeechForDetailLotType
 };
 
+var available_lot_type = ["permit", "motorcycle", "accessible",
+	"short term", "visitor", "permit", "meter"];
+
 function generateGeneralSpeech(type) {
 	if (type == "ERROR") { // unhandled error
 		return ("Sorry, but something is wrong with my code. " +
@@ -33,7 +36,33 @@ function generateGeneralSpeech(type) {
 	}
 	else if (type == "WELCOME") {
 		return ("Hello! Welcome to What Park! You can ask me anything regarding to parking at "+
-			"the University of Waterloo. For example, tell me about visitor parking. ");
+			"the University of Waterloo. For example, tell me about visitor parking. " +
+			"Or, how's student parking look like? " +
+			"Now, what can I help you with? ");
+	}
+	else if (type == "HELP") {
+		var speech_out = ("You can ask about a specific lot type by asking, Ask What Park about permit parking. " +
+			"I can handle lot types ");
+		for (var i = 0; i < available_lot_type.length; i++) {
+			speech_out += available_lot_type[i];
+			speech_out += ", ";
+		}
+		speech_out += ("You can also ask for real-time update on student parking, by asking. " +
+			"Ask What Park how's student parking look like? " +
+			"Now, what can I help you with? ");
+		return speech_out;
+	}
+	else if (type == "LOT_INFO_MISS") {
+		return ("Sorry, but I did not recognize neither the lot type nor the lot name. " + 
+			"Would you mind repeating the question again? ");
+	}
+	else if (type == "LOT_INFO_TWO") {
+		return ("Sorry, but I received both lot type and lot name. However, I can " +
+			"only handle with one input. Would you mind repeating the question? ");
+	}
+	else {
+		return ("Sorry, I'm having trouble handling your request. " +
+			"Would you mind repeating the question? ");
 	}
 }
 

@@ -30,13 +30,22 @@ function getStudentParkingInfo(callback, intent) {
 
 function getInfoForParkingLot(callback, intent) {
 	var request_type = ""; var lot_type = false;
-	if (intent.slots.LotType !== undefined) {
+	if (intent.slots.LotType.value === undefined &&
+		intent.slots.LotName.value === undefined) {
+		callback([null, speech_manager.generateGeneralSpeech("LOT_INFO_MISS"), null]);
+	}
+	else if (intent.slots.LotType.value !== undefined &&
+		intent.slots.LotName.value === undefined) {
 		request_type = intent.slots.LotType.value;
 		lot_type = true;
 	}
-	else {
+	else if (intent.slots.LotType.value === undefined &&
+		intent.slots.LotName.value !== undefined) {
 		lot_type = false;
 		throw "ERROR: Not implemented yet! "; // FIX ME!
+	}
+	else {
+		callback([null, speech_manager.generateGeneralSpeech("LOT_INFO_TWO"), null]);
 	}
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = null;

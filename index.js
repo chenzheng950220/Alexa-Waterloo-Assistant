@@ -95,13 +95,13 @@ function onSessionEnded(sessionEndedRequest, session) {
 // ------- Skill specific logic -------
 
 function getWelcomeResponse(callback) {
-    var speech_output = "<speak> Hello </speak>";
-    callback(null, buildSpeechletResponseSimple(null, speech_output));
+    var speech_output = speech_manager.generateGeneralSpeech("WELCOME");
+    callback(null, buildSpeechletResponseSession(null, speech_output, false));
 }
 
 function handleHelpIntent(callback) {
-    var speech_output = "<speak> Help </speak>";
-    callback(null, buildSpeechletResponseSimple(null, speech_output));
+    var speech_output = speech_manager.generateGeneralSpeech("HELP");
+    callback(null, buildSpeechletResponseSession(null, speech_output, false));
 }
 
 function handleStopIntent(callback) {
@@ -111,14 +111,16 @@ function handleStopIntent(callback) {
 
 function handleAskParkingInfoIntent(intent, session, context, callback) {
     parking_manager.getInfoForParkingLot(function(ret_val) {
-        callback(ret_val[0], buildSpeechletResponseSession(null, ret_val[1], false));
+        var session_flag = false;
+        if (ret_val[0] === undefined) { session_flag = true; }
+        callback(ret_val[0], buildSpeechletResponseSession(ret_val[2], ret_val[1], session_flag));
         // do not end session here, in case user wants to here detail info on parking type
     }, intent);
 }
 
 function handleAskStudentParkingIntent(intent, session, context, callback) {
-    parking_manager.getStudentParkingInfo(function(speech_output) {
-        callback(null, buildSpeechletResponseSimple(null, speech_output));
+    parking_manager.getStudentParkingInfo(function(ret_val) {
+        callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
     }, intent);
 }
 
