@@ -7,6 +7,7 @@ var SKILL_NAME = 'AlexaWatPark';
 var alert_message = "";
 var parking_manager = require('./alexa-modules/ParkingManager.js');
 var speech_manager = require('./alexa-modules/SpeechManager.js');
+var weather_manager = require('./alexa-modules/WeatherManager.js');
 
 const REQ_LAUNCH = "LaunchRequest";
 const REQ_INT = "IntentRequest";
@@ -17,6 +18,7 @@ const INT_AMAZON_CANCEL = "AMAZON.CancelIntent";
 const INT_ASK_PK = "AskParkingInfo";
 const INT_ASK_STD_PK = "AskStudentParkingInfo";
 const INT_YES = "YesIntent";
+const INT_WEATHER = "AskWeather";
 
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
@@ -105,6 +107,10 @@ function onIntent(intentRequest, session, context, callback) {
             handleYesIntent(intent, session, context, callback);
             break;
 
+        case INT_WEATHER:
+            handleWeatherIntent(intent, session, context, callback);
+            break;
+
         default:
             throw "ERROR: Invalid intent";
     }
@@ -158,6 +164,12 @@ function handleYesIntent(intent, session, context, callback) {
     }
     speech_out = speech_manager.generateSpeechForDetailLotType(session.attributes);
     callback(null, buildSpeechletResponseSession(null, speech_out, true));
+}
+
+function handleWeatherIntent(intent, session, context, callback) {
+    weather_manager.getWeatherInfo(function(ret_val) {
+        callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
+    }, intent);
 }
 
 // ------- Helper functions to build responses for Alexa -------

@@ -7,7 +7,8 @@ module.exports = {
     generateSpeechForLotType: generateSpeechForLotType,
     generateGeneralSpeech: generateGeneralSpeech,
     generateSpeechForStudentParking: generateSpeechForStudentParking,
-    generateSpeechForDetailLotType: generateSpeechForDetailLotType
+    generateSpeechForDetailLotType: generateSpeechForDetailLotType,
+    generateSpeechForWeather: generateSpeechForWeather
 };
 
 const available_lot_type = ["permit", "motorcycle", "accessible",
@@ -18,14 +19,13 @@ const SPEECH_BAD_REQ = "Sorry, but the request for API was a failure. Can you ma
 const SPEECH_BAD_REQ_TYPE = "Sorry, but I did not recognize the slot type you provided. Would you mind repeating the question for me? ";
 const SPEECH_NO_RES_MORE_INFO = "Sorry, but I didn't hear your answer. If you would like to know more information on the lot type you were asking, please say yes. Otherwise, say stop. ";
 const SPEECH_NO_PREV_SESSION = "Sorry, I didn't get that. Would you mind starting from the beginning? ";
-const SPEECH_WELCOME = "Hello! Welcome to What Park! You can ask me anything regarding to parking at the University of Waterloo. For example, tell me about visitor parking. Or, how's student parking look like? Now, what can I help you with? ";
+const SPEECH_WELCOME = "Hello! Welcome to UW Assistant! You can ask me anything about the life events at University of Waterloo. For example, weather, parking. Now, what can I help you with? ";
 const SPEECH_LOT_INFO_MISS = "Sorry, but I did not recognize neither the lot type nor the lot name. Would you mind repeating the question again? ";
 const SPEECH_LOT_INFO_TWO = "Sorry, but I received both lot type and lot name. However, I can only handle with one input. Would you mind repeating the question? ";
-const SPEECH_HELP = ("You can ask about a specific lot type by asking, Ask What Park about permit parking. I can handle the following lot types. " + 
-	"permit, motorcycle, accessible, short term, visitor, permit, meter. You can also ask for real-time update on student parking, by asking. " +
-	"Ask What Park how's student parking look like? Now, what can I help you with? ");
-
-
+const SPEECH_HELP = ("To ask about weather, say how's the weather on campus? To ask about parking, say, tell me about permit parking. I can handle " + 
+	"permit, motorcycle, accessible, short term, visitor, permit, and meter parking. " + 
+	"Student parking status is updated real-time. You can ask, how's student parking look like? " +
+	"Now, what can I do for you? ");
 
 function generateGeneralSpeech() {
 	var dict = {
@@ -85,6 +85,42 @@ function generateSpeechForStudentParking(data, intent) {
 		speech_out += "All student parking lots are full. ";
 		speech_out += "Remaining parking capacity is under 10%. ";
 	}
+	return addSpeakTag(speech_out);
+}
+
+function generateSpeechForWeather(data,intent) {
+	const weather_data = data.data;
+	const cur_temp = weather_data.temperature_current_c;
+	const wind_chill = weather_data.windchill_c;
+	const high = weather_data.temperature_24hr_max_c;
+	const low = weather_data.temperature_24hr_min_c;
+	const precip_15m = weather_data.precipitation_15min_mm;
+	const precip_1h = weather_data.precipitation_1hr_mm;
+	const wind_speed = weather_data.wind_speed_kph;
+	const wind_direct = weather_data.wind_direction;
+
+	var speech_out = "";
+
+	// temperature condition
+	speech_out += ("Current temperature is " + cur_temp + " degrees. ");
+	if (wind_chill !== null) {
+		speech_out += ("Wind chill is " + wind_chill + "degrees outside. ");
+	}
+	speech_out += ("In the next 24 hours, highest will be " + high + " and lowest will be " + low + " degrees. ");
+
+	// rain
+	if (precip_15m > 1 && precip_1h > 1) {
+		speech_out += ("Rain persists for the next 1 hour. ");
+	}
+	else if (precip_15m > 1 && precip_1h < 1) {
+		speech_out += ("Rain will not in the next 1 hour. ");
+	}
+
+	// wind
+	if (wind_speed > 10) {
+		speech_out += ("Strong wind is blowing outside. ");
+	}
+
 	return addSpeakTag(speech_out);
 }
 
