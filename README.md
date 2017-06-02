@@ -12,12 +12,24 @@
 Check out the [issues](https://github.com/chenzheng950220/AlexaWatPark/issues) tab to see what's on the roadmap.
 
 ## How to use?
-You need to first find a place to [host the server](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-web-service). I personally chose AWS Lambda since it's easier to hook up with AVS services from Alexa Developer Kit. However, hosting your own server is also an option, which requires a secure https link.
+You need to first find a place to [host the server](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-web-service).
+* If you are using Lambda function on AWS, create your own function and zip the following files, then upload to your Lambda function
+	* index.js (file)
+	* alexa-modules (folder)
+	* node_modules (folder)
+* If you are hosting your own server, clone this folder and run
+	```bash
+	npm install
+	```
+	After finished, run
+	```bash
+	node app.js
+	```
+	This command executes the server and server is listening on port 8000 in default. If you want to change this, modify the file config.js.
 
-After making the choice, you need to install npm dependencies in a bash shell with command
-```bash
-npm install
-```
+The Alexa skill requires a secure HTTPS connection to your server. If this is not an option on your current server, a proxy re-route might be a good option. There are many tools that can achieve this - [caddy](https://caddyserver.com), [nginx](https://www.nginx.com/resources/wiki/).
+
+Also, if you would like to run app.js at background, even if your current ssh session is terminated, [pm2](https://github.com/Unitech/pm2) might be a good choice.
 
 ## Developer
 * Zheng Chen (chenzheng950220@gmail.com)
