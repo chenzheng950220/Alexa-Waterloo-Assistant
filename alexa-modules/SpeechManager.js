@@ -9,7 +9,8 @@ module.exports = {
     generateSpeechForStudentParking: generateSpeechForStudentParking,
     generateSpeechForDetailLotType: generateSpeechForDetailLotType,
     generateSpeechForWeather: generateSpeechForWeather,
-    addSpeakTag: addSpeakTag
+    addSpeakTag: addSpeakTag,
+    generateSpeechForGoose: generateSpeechForGoose
 };
 
 const available_lot_type = ["permit", "motorcycle", "accessible",
@@ -41,6 +42,18 @@ function generateGeneralSpeech() {
 		SPEECH_HELP: SPEECH_HELP
 	};
 	return dict;
+}
+
+function generateSpeechForGoose(data, intent) {
+	var speech_out = "";
+	const goose_loc = data.data; const goose_num = goose_loc.length; 
+	speech_out += ("There are " + goose_num + " goose watch alerts on campus. ");
+	speech_out += ("Here is the full list. You can also refer to the card for all watch locations. ");
+	for (var i = 0; i < goose_num; i++) {
+		speech_out += goose_loc[i].location;
+		speech_out += "<break time=\"0.3s\"/>";
+	}
+	return addSpeakTag(speech_out);
 }
 
 function generateSpeechForStudentParking(data, intent) {

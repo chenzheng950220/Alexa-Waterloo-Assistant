@@ -6,8 +6,24 @@ This module generates card for displaying.
 module.exports = {
 	generateCardForStudentParking: generateCardForStudentParking,
 	generateCardForLotType: generateCardForLotType,
-	generateCardForWeather: generateCardForWeather
+	generateCardForWeather: generateCardForWeather,
+	generateCardForGoose: generateCardForGoose
 };
+
+function generateCardForGoose(data, intent) {
+	var card = {};
+	card.type = "Standard";
+	card.title = "Goose Watch";
+	card.text = "";
+
+	const goose_loc = data.data; const goose_num = goose_loc.length;
+	for (var i = 0; i < goose_num; i++) {
+		card.text += goose_loc[i].location;
+		card.text += " \n";
+	}
+
+	return card;
+}
 
 function generateCardForWeather(data, intent) {
 	var card = {};
