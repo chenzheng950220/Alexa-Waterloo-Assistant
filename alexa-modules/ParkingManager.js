@@ -3,9 +3,9 @@ Parking Manager for Alexa
 This module manages info fetched from API
 *********************************/
 
-var api_manager = require('./APIManager.js');
-var speech_manager = require('./SpeechManager.js');
-var card_manager = require('./CardManager.js');
+const api_manager = require('./APIManager.js');
+const speech_manager = require('./SpeechManager.js');
+const card_manager = require('./CardManager.js');
 
 module.exports = {
     getInfoForParkingLot: getInfoForParkingLot,
@@ -29,36 +29,20 @@ function getStudentParkingInfo(callback, intent) {
 }
 
 function getInfoForParkingLot(callback, intent) {
-	var request_type = ""; var lot_type = false;
-	if (intent.slots.LotType.value === undefined &&
-		intent.slots.LotName.value === undefined) {
+	var request_type = "";
+	if (intent.slots.LotType.value === undefined) {
 		callback([null, speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_MISS, null]);
 	}
-	else if (intent.slots.LotType.value !== undefined &&
-		intent.slots.LotName.value === undefined) {
-		request_type = intent.slots.LotType.value;
-		lot_type = true;
-	}
-	else if (intent.slots.LotType.value === undefined &&
-		intent.slots.LotName.value !== undefined) {
-		lot_type = false;
-		throw "ERROR: Not implemented yet! "; // FIX ME!
-	}
 	else {
-		callback([null, speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_TWO, null]);
+		request_type = intent.slots.LotType.value;
 	}
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = null;
 		if (data == "ERROR") {
 			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ, null]);
 		}
-		if (lot_type) {
-			speech_out += speech_manager.generateSpeechForLotType(data, intent);
-			card = card_manager.generateCardForLotType(data, intent);
-		}
-		else {
-			throw "ERROR: Not implemented yet! "; // FIX ME!
-		}
+		speech_out += speech_manager.generateSpeechForLotType(data, intent);
+		card = card_manager.generateCardForLotType(data, intent);
 		callback ([data, speech_out, card]);
 	}, request_type);
 }

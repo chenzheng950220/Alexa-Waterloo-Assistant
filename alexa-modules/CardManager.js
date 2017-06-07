@@ -48,7 +48,8 @@ function generateCardForWeather(data, intent) {
 
 function generateCardForStudentParking(data, intent) {
 	var card = {};
-	
+	card.type = "Standard";
+	card.title = "Student Parking Status";
 	card.text = "";
 	for (var i = 0; i < 4; ++i) {
 		var cap = data.data[i].capacity;
@@ -65,7 +66,7 @@ function generateCardForStudentParking(data, intent) {
 function generateCardForLotType(data, intent) {
 	var card = {};
 	card.type = "Standard";
-	card.title = "Student Parking Status";
+	card.title = (intent.slots.LotType.value + " Parking Status");
 	card.text = "";
 	for (var i = 0; i < 4; ++i) {
 		var name = data.data[i].name;

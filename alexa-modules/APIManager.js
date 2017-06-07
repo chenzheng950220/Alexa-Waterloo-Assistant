@@ -3,7 +3,7 @@ API Manager for Alexa
 This module fetches info from UW Open API
 *********************************/
 
-var request = require('request');
+const request = require('request');
 const base_url_parking = "https://api.uwaterloo.ca/v2/parking/";
 const base_url_weather = "https://api.uwaterloo.ca/v2/weather/current.json";
 const token = "da4f8f38697f99b07a89ce05c3dcf755";
@@ -19,33 +19,41 @@ function getUrl(request_type) { // get appropriate url
         return (base_url_weather + "?key=" + token);
     }
     var index = parking_request_types.indexOf(request_type);
-    if (index == -1) {
-        console.log("ERROR: Wrong type passed in request_type: "+request_type);
-        return "BAD_REQ_TYPE";
-    }
-    else if (index === 0) {
-        return (base_url_parking + "watpark.json?key=" + token);
-    }
-    else {
-        return (base_url_parking + "lots/" + request_type + ".json?key=" + token);
+    switch (index) {
+        case -1:
+            console.log("ERROR: Wrong type passed in request_type: "+request_type);
+            return "BAD_REQ_TYPE"; break;
+
+        case 0:
+            return (base_url_parking + "watpark.json?key=" + token);
+            break;
+
+        default:
+            return (base_url_parking + "lots/" + request_type + ".json?key=" + token);
     }
 }
 
 function getJSON(callback, request_type) {
     var url = getUrl(request_type);
-    if (url.substring(0,5) != "https") { callback(url); }
+    if (url.substring(0,5) != "https") { callback("ERROR"); }
     request.get(url, function(error, response, body) {
         if (response.statusCode != 200) {
             console.log(getUrl(request_type));
             console.log("ERROR: Http request error: "+response.statusCode);
-            callback("BAD_REQ");
+            callback("ERROR");
         }
-        var d = JSON.parse(body);
-        if (d !== null) {
-            callback(d);
+        try {
+            var d = JSON.parse(body);
+            if (d !== null) {
+                callback(d);
+            }
+            else {
+                console.log("ERROR: JSON parsing retuns null! ");
+                callback("ERROR");
+            }
         }
-        else {
-            console.log("ERROR: JSON parsing retuns null! ");
+        catch (e) {
+            console.log("ERROR: "+e);
             callback("ERROR");
         }
     });

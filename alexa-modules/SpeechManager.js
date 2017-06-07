@@ -8,7 +8,8 @@ module.exports = {
     generateGeneralSpeech: generateGeneralSpeech,
     generateSpeechForStudentParking: generateSpeechForStudentParking,
     generateSpeechForDetailLotType: generateSpeechForDetailLotType,
-    generateSpeechForWeather: generateSpeechForWeather
+    generateSpeechForWeather: generateSpeechForWeather,
+    addSpeakTag: addSpeakTag
 };
 
 const available_lot_type = ["permit", "motorcycle", "accessible",
@@ -47,44 +48,55 @@ function generateSpeechForStudentParking(data, intent) {
 	var lot_name = ['C', 'N', 'W', 'X'];
 	var lot_status = assessStudentParking(data);
 	var lot_overall_status = assessStudentOverallParking(lot_status);
-	if (lot_overall_status == 1) {
-		speech_out += "Student parking looks normal at the moment. ";
-		speech_out += "All slots are either empty or normal. ";
+
+	switch (lot_overall_status) {
+		case 1:
+			speech_out += "Student parking looks normal at the moment. ";
+			speech_out += "All slots are either empty or normal. ";
+			break;
+
+		case 2:
+			speech_out += "Student parking is tense right now. ";
+			for (var i = 0; i < 4; i++) {
+				speech_out += ("Lot " + lot_name[i] + " ");
+				var remaining_spots = (data.data[i].capacity - data.data[i].current_count);
+				speech_out += ("has " + remaining_spots + " parking spots left. ");
+			}
+			break;
+
+		case 3:
+			var full_lot = []; var not_full_lot = [];
+			for (var j = 0; j < 4; j++) {
+				if (lot_status[j] >= 4) { full_lot.push(lot_name[j]); }
+				else { not_full_lot.push(lot_name[j]); }
+			}
+			speech_out += "Lot ";
+			for (var k = 0; k < full_lot.length; k++) {
+				speech_out += full_lot[k];
+				speech_out += ", ";
+			}
+			if (full_lot.length == 1) {
+				speech_out += "is ";
+			}
+			else { speech_out += "are "; }
+			speech_out += "full. However, there are still some parking capacities in lot ";
+			for (var l = 0; l < not_full_lot.length; l++) {
+				speech_out += not_full_lot[l];
+				if (l == (not_full_lot.length - 1)) { speech_out += ". "; }
+				else { speech_out += ", "; }
+			}
+			break;
+
+		case 4:
+			speech_out += "All student parking lots are full. ";
+			speech_out += "Remaining parking capacity is under 10%. ";
+			break;
+
+		default:
+			console.log("ERROR: assessStudentOverallParking returned a number other than 1-4! ");
+			return "";
 	}
-	else if (lot_overall_status == 2) {
-		speech_out += "Student parking is tense right now. ";
-		for (var i = 0; i < 4; i++) {
-			speech_out += ("Lot " + lot_name[i] + " ");
-			var remaining_spots = (data.data[i].capacity - data.data[i].current_count);
-			speech_out += ("has " + remaining_spots + " parking spots left. ");
-		}
-	}
-	else if (lot_overall_status == 3) {
-		var full_lot = []; var not_full_lot = [];
-		for (var j = 0; j < 4; j++) {
-			if (lot_status[j] >= 4) { full_lot.push(lot_name[j]); }
-			else { not_full_lot.push(lot_name[j]); }
-		}
-		speech_out += "Lot ";
-		for (var k = 0; k < full_lot.length; k++) {
-			speech_out += full_lot[k];
-			speech_out += ", ";
-		}
-		if (full_lot.length == 1) {
-			speech_out += "is ";
-		}
-		else { speech_out += "are "; }
-		speech_out += "full. However, there are still some parking capacities in lot ";
-		for (var l = 0; l < not_full_lot.length; l++) {
-			speech_out += not_full_lot[l];
-			if (l == (not_full_lot.length - 1)) { speech_out += ". "; }
-			else { speech_out += ", "; }
-		}
-	}
-	else {
-		speech_out += "All student parking lots are full. ";
-		speech_out += "Remaining parking capacity is under 10%. ";
-	}
+
 	return addSpeakTag(speech_out);
 }
 

@@ -1,9 +1,8 @@
-var http = require('http');
-var verifier = require('alexa-verifier');
-var config = require('./config.js');
-var alexa = require('./server.js');
-
-var debug = false;
+const http = require('http');
+const verifier = require('alexa-verifier');
+const config = require('./config.js');
+const alexa = require('./index.js');
+const debug = require('./alexa-modules/Debug.js');
 
 http.createServer(onRequest).listen(config.port);
 
@@ -14,7 +13,7 @@ function onRequest(req, res) {
 
 	// Request Query Fields
 	req_header = req.headers;
-    if (debug) { console.log(req_header); }
+    if (debug.debug_flag) { console.log(req_header); }
 
 	// verify authentication of the request
 	var body = []; var response; var body_str;
@@ -22,6 +21,7 @@ function onRequest(req, res) {
 		body.push(chunk);
 	}).on('end', function () {
 		body_str = Buffer.concat(body).toString();
+		if (debug.debug_flag) { console.log(body_str); }
 		try {
 			body_json = JSON.parse(body_str);
 		}
@@ -43,9 +43,11 @@ function onRequest(req, res) {
 		});
 
 		// handle request from AVS
-		alexa.handler(body_json, function (alexa_response) {
+		alexa.server_handler(body_json, function (alexa_response) {
+			var response_json = JSON.stringify(alexa_response);
 			res.writeHead(200, "OK", response_header);
-			res.end(JSON.stringify(alexa_response)); // write JSON response
+			if (debug.debug_flag) { console.log(response_json); }
+			res.end(response_json); // write JSON response
 		});
 	});
 }

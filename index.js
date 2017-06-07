@@ -1,13 +1,12 @@
 'use strict';
-var Alexa = require('alexa-sdk');
-var util = require('util');
+const Alexa = require('alexa-sdk');
+const util = require('util');
 
-var APP_ID = 'amzn1.ask.skill.1db13f3d-b9b8-4cef-8145-b9086748dc9b';
-var SKILL_NAME = 'AlexaWatPark';
-var alert_message = "";
-var parking_manager = require('./alexa-modules/ParkingManager.js');
-var speech_manager = require('./alexa-modules/SpeechManager.js');
-var weather_manager = require('./alexa-modules/WeatherManager.js');
+const APP_ID = 'amzn1.ask.skill.1db13f3d-b9b8-4cef-8145-b9086748dc9b';
+const SKILL_NAME = 'AlexaWatPark';
+const parking_manager = require('./alexa-modules/ParkingManager.js');
+const speech_manager = require('./alexa-modules/SpeechManager.js');
+const weather_manager = require('./alexa-modules/WeatherManager.js');
 
 const REQ_LAUNCH = "LaunchRequest";
 const REQ_INT = "IntentRequest";
@@ -20,6 +19,42 @@ const INT_ASK_STD_PK = "AskStudentParkingInfo";
 const INT_YES = "YesIntent";
 const INT_WEATHER = "AskWeather";
 
+// handle the incoming request from http server, not the lambda server
+exports.server_handler = function (event, callback) {
+    try {
+        if (event.session.new) {
+            onSessionStarted({requestId: event.request.requestId}, event.session);
+        }
+
+        switch (event.request.type) {
+            case REQ_LAUNCH:
+                onLaunch(event.request, event.session,
+                    function(sessionAttributes, speechletResponse) {
+                        callback(buildResponse(sessionAttributes, speechletResponse));
+                    });
+                break;
+
+            case REQ_INT:
+                console.log(util.inspect(event, false, null));
+                onIntent(event.request,
+                    event.session, event.context,
+                    function(sessionAttributes, speechletResponse) {
+                        callback(buildResponse(sessionAttributes, speechletResponse));
+                    });
+                break;
+
+            case REQ_SESSION_END:
+                onSessionEnded(event.request, event.session);
+                callback({}, {});
+                break;
+
+            default:
+                throw "ERROR: Bad Request from AVS! ";
+        }
+    } catch (e) {
+        callback("Exception: " + e);
+    }
+};
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
@@ -133,6 +168,7 @@ function getWelcomeResponse(callback) {
 
 function handleHelpIntent(callback) {
     var speech_output = speech_manager.generateGeneralSpeech().SPEECH_HELP;
+    speech_output = speech_manager.addSpeakTag(speech_output);
     callback(null, buildSpeechletResponseSession(null, speech_output, false));
 }
 
