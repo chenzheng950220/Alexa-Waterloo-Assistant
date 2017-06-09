@@ -7,6 +7,9 @@
 	* You can ask for current student parking condition. The parking condition is updated real-time, and WatPark will give you suggestions on where to park based on current parking conditions.
 * Weather Information
 	* You can ask for current weather condition on campus, which is measured from the University of Waterloo [Weather Station](http://weather.uwaterloo.ca).
+* Goose Watch
+	* They're attacking!
+	* You can ask for all goose watch information by asking 'where are the geese?'. Alexa will prompt you with all reported goose watch locations.
 
 ## What will be done?
 Check out the [issues](https://github.com/chenzheng950220/AlexaWatPark/issues) tab to see what's on the roadmap.
