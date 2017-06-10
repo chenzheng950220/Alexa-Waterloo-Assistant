@@ -10,6 +10,7 @@
 	"dependencies": {
 		"alexa-sdk": "^1.0.9",
 		"request": "^2.81.0",
-		"alexa-verifier": "^0.3.6"
+		"alexa-verifier": "^0.3.6",
+		"aws-sdk": "^2.67.0"
 	}
 }
