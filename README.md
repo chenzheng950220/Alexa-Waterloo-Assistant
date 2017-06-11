@@ -39,10 +39,20 @@ The Alexa skill requires a secure HTTPS connection to your server. If this is no
 Also, if you would like to run app.js at background, even if your current ssh session is terminated, [pm2](https://github.com/Unitech/pm2) might be a good choice.
 
 ## Developer
-* Zheng Chen (chenzheng950220@gmail.com)
+* [Zheng Chen](https://www.zhengchen.info)
+
+## Tools used
+* caddy - proxy reroute
+* Node.JS - programming language
+* UW Open API - information resources
+* AWS Lambda - host backend code choice 1
+* AWS EC2 - host backend code choice 2
+* AWS DynamoDB - store parking information
+* AWS Route 53 - hosting zones, request endpoint
 
 ## Resources
 * [Alexa Developer Kit](https://developer.amazon.com/alexa-skills-kit)
 * [Node.JS](https://nodejs.org/en/)
 * [UW Open API](https://uwaterloo.ca/api/)
+* [AWS](https://aws.amazon.com)
 
