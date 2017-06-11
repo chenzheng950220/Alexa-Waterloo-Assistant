@@ -15,12 +15,12 @@ var dynamodb = new AWS.DynamoDB();
 var create_params = {
     TableName : "UWParking",
     KeySchema: [       
-        { AttributeName: "campus", KeyType: "HASH"},  //Partition key
-        { AttributeName: "lot_name", KeyType: "RANGE"} // sort key
+        { AttributeName: "lot_name", KeyType: "HASH"},  //Partition key
+        { AttributeName: "lot_type", KeyType: "RANGE"} // sort key
     ],
     AttributeDefinitions: [       
-        { AttributeName: "campus", AttributeType: "S" },
-        { AttributeName: "lot_name", AttributeType: "S"}
+        { AttributeName: "lot_name", AttributeType: "S" },
+        { AttributeName: "lot_type", AttributeType: "S"}
     ],
     ProvisionedThroughput: {       
         ReadCapacityUnits: 10, 

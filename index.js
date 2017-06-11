@@ -193,8 +193,8 @@ function handleGooseWatchIntent(intent, session, context, callback) {
 
 function handleAskParkingInfoIntent(intent, session, context, callback) {
     parking_manager.getInfoForParkingLot(function(ret_val) {
-        var session_flag = false;
-        if (ret_val[0] === undefined) { session_flag = true; }
+        var session_flag = true;
+        if (ret_val[0]) { session_flag = false; }
         callback(ret_val[0], buildSpeechletResponseSession(ret_val[2], ret_val[1], session_flag));
         // do not end session here, in case user wants to here detail info on parking type
     }, intent);

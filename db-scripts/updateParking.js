@@ -50,7 +50,6 @@ function insertSingleData(p_data, type) {
         var put_params = {
             TableName: table,
             Item: {
-                campus: "UW",
                 lot_name: current_lot.name,
                 lot_type: type,
                 description: current_lot.description,

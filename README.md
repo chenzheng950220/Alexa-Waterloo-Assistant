@@ -4,7 +4,9 @@
 ## What has been done?
 * Parking Information
 	* You can ask for meter, permit, visitor, short term, accessible, and motorcycle parking information. WatPark will provide you with a list of lot names and lot descriptions.
-	* You can ask for information about one specific parking lot, for example, "tell me something about lot X"
+	* You can ask for information about one specific parking lot, for example, "tell me about lot X"
+		* NOTE: AVS might have trouble recognising what you said on lot name part, even if all available names are well-defined in intent schema.
+		* There is an extra layer while handling your request when database cannot find the exact match on the lot you requested - request for entries that contain the name you requested.
 	* You can ask for current student parking condition. The parking condition is updated real-time, and WatPark will give you suggestions on where to park based on current parking conditions.
 * Weather Information
 	* You can ask for current weather condition on campus, which is measured from the University of Waterloo [Weather Station](http://weather.uwaterloo.ca).
