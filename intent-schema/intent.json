@@ -17,6 +17,20 @@
       ]
     },
     {
+      "name": "AskGooseWatch",
+      "samples": [
+        "where are the geese",
+        "where are the goose",
+        "goose watch",
+        "geese watch",
+        "goose ",
+        "geese",
+        "tell me about goose",
+        "tell me about geest"
+      ],
+      "slots": []
+    },
+    {
       "name": "AskParkingInfo",
       "samples": [
         "Tell me about {LotType} ",
@@ -25,12 +39,24 @@
         "tell me about {LotType} lot",
         "tell me about lot {LotType} ",
         "{LotType} lot",
-        "{LotType} parking"
+        "{LotType} parking",
+        "tell me about {LotName} ",
+        "tell me about lot {LotName} ",
+        "tell me about {LotName} lot",
+        "tell me about {LotName} parking lot",
+        "tell me about parking lot {LotName} ",
+        "lot {LotName} ",
+        "{LotName} lot"
       ],
       "slots": [
         {
           "name": "LotType",
           "type": "LotType",
+          "samples": []
+        },
+        {
+          "name": "LotName",
+          "type": "LotName",
           "samples": []
         }
       ]
@@ -77,6 +103,286 @@
     }
   ],
   "types": [
+    {
+      "name": "LotName",
+      "values": [
+        {
+          "name": {
+            "value": "A"
+          }
+        },
+        {
+          "name": {
+            "value": "S"
+          }
+        },
+        {
+          "name": {
+            "value": "Q"
+          }
+        },
+        {
+          "name": {
+            "value": "DC-C2"
+          }
+        },
+        {
+          "name": {
+            "value": "UNC-UET"
+          }
+        },
+        {
+          "name": {
+            "value": "COM-CSB"
+          }
+        },
+        {
+          "name": {
+            "value": "UEC"
+          }
+        },
+        {
+          "name": {
+            "value": "UWP"
+          }
+        },
+        {
+          "name": {
+            "value": "DC-GSC"
+          }
+        },
+        {
+          "name": {
+            "value": "CL"
+          }
+        },
+        {
+          "name": {
+            "value": "E5"
+          }
+        },
+        {
+          "name": {
+            "value": "B"
+          }
+        },
+        {
+          "name": {
+            "value": "T"
+          }
+        },
+        {
+          "name": {
+            "value": "LIB-NH"
+          }
+        },
+        {
+          "name": {
+            "value": "PAS-HH"
+          }
+        },
+        {
+          "name": {
+            "value": "BMH-ERC"
+          }
+        },
+        {
+          "name": {
+            "value": "STJ"
+          }
+        },
+        {
+          "name": {
+            "value": "EV3"
+          }
+        },
+        {
+          "name": {
+            "value": "R"
+          }
+        },
+        {
+          "name": {
+            "value": "DWE-SCH"
+          }
+        },
+        {
+          "name": {
+            "value": "LIB-ML"
+          }
+        },
+        {
+          "name": {
+            "value": "OPT"
+          }
+        },
+        {
+          "name": {
+            "value": "M3-MC"
+          }
+        },
+        {
+          "name": {
+            "value": "H"
+          }
+        },
+        {
+          "name": {
+            "value": "MC-M3"
+          }
+        },
+        {
+          "name": {
+            "value": "J"
+          }
+        },
+        {
+          "name": {
+            "value": "C"
+          }
+        },
+        {
+          "name": {
+            "value": "E6-ECH"
+          }
+        },
+        {
+          "name": {
+            "value": "V1-UC"
+          }
+        },
+        {
+          "name": {
+            "value": "TC-SCH"
+          }
+        },
+        {
+          "name": {
+            "value": "M"
+          }
+        },
+        {
+          "name": {
+            "value": "USC"
+          }
+        },
+        {
+          "name": {
+            "value": "ML-EV3"
+          }
+        },
+        {
+          "name": {
+            "value": "UWC-UWT"
+          }
+        },
+        {
+          "name": {
+            "value": "L"
+          }
+        },
+        {
+          "name": {
+            "value": "O"
+          }
+        },
+        {
+          "name": {
+            "value": "K"
+          }
+        },
+        {
+          "name": {
+            "value": "UWC"
+          }
+        },
+        {
+          "name": {
+            "value": "E5-ECH"
+          }
+        },
+        {
+          "name": {
+            "value": "REN"
+          }
+        },
+        {
+          "name": {
+            "value": "PAC-LHI-UC"
+          }
+        },
+        {
+          "name": {
+            "value": "PAC-SLC"
+          }
+        },
+        {
+          "name": {
+            "value": "EC2-EC3"
+          }
+        },
+        {
+          "name": {
+            "value": "STP"
+          }
+        },
+        {
+          "name": {
+            "value": "X"
+          }
+        },
+        {
+          "name": {
+            "value": "NH"
+          }
+        },
+        {
+          "name": {
+            "value": "OV"
+          }
+        },
+        {
+          "name": {
+            "value": "D"
+          }
+        },
+        {
+          "name": {
+            "value": "V1-MKV"
+          }
+        },
+        {
+          "name": {
+            "value": "MKV-V1"
+          }
+        },
+        {
+          "name": {
+            "value": "W"
+          }
+        },
+        {
+          "name": {
+            "value": "V"
+          }
+        },
+        {
+          "name": {
+            "value": "N"
+          }
+        },
+        {
+          "name": {
+            "value": "HV"
+          }
+        },
+        {
+          "name": {
+            "value": "CGR"
+          }
+        }
+      ]
+    },
     {
       "name": "LotType",
       "values": [

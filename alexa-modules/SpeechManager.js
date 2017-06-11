@@ -10,12 +10,15 @@ module.exports = {
     generateSpeechForDetailLotType: generateSpeechForDetailLotType,
     generateSpeechForWeather: generateSpeechForWeather,
     addSpeakTag: addSpeakTag,
-    generateSpeechForGoose: generateSpeechForGoose
+    generateSpeechForGoose: generateSpeechForGoose,
+    generateSpeechForLotName: generateSpeechForLotName
 };
 
 const available_lot_type = ["permit", "motorcycle", "accessible",
 	"short term", "visitor", "permit", "meter"];
 
+const SPEECH_DB_EMPTY= "Sorry, but the request lot name you asked for did not match any entries in my database. Would you mind repeating your question again? ";
+const SPEECH_DB_ERROR = "Sorry. but I'm having trouble making queries to the database. Would you mind try again later? ";
 const SPEECH_ERROR = "Sorry, but something is wrong with my code. Would you mind repeating your question and try again? ";
 const SPEECH_BAD_REQ = "Sorry, but the request for API was a failure. Can you make sure that you have the correct access token? ";
 const SPEECH_BAD_REQ_TYPE = "Sorry, but I did not recognize the slot type you provided. Would you mind repeating the question for me? ";
@@ -39,9 +42,28 @@ function generateGeneralSpeech() {
 		SPEECH_WELCOME: SPEECH_WELCOME,
 		SPEECH_LOT_INFO_MISS: SPEECH_LOT_INFO_MISS,
 		SPEECH_LOT_INFO_TWO: SPEECH_LOT_INFO_TWO,
-		SPEECH_HELP: SPEECH_HELP
+		SPEECH_HELP: SPEECH_HELP,
+		SPEECH_DB_ERROR: SPEECH_DB_ERROR,
+		SPEECH_DB_EMPTY: SPEECH_DB_EMPTY
+
 	};
 	return dict;
+}
+
+function generateSpeechForLotName(data, intent) {
+	var speech_out = "";
+	const data_len = data.length;
+
+	for (var i = 0; i < data_len; i++) {
+		const cur_data = data[i];
+		speech_out += ("Lot " + cur_data.lot_name + " is a " + cur_data.lot_type + " lot. ");
+		speech_out += ("Located at " + cur_data.description + ". ");
+		if (cur_data.additional_info) {
+			speech_out += (cur_data.additional_info + ". ");
+		}
+	}
+
+	return speech_out;
 }
 
 function generateSpeechForGoose(data, intent) {

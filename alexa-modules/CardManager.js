@@ -7,8 +7,27 @@ module.exports = {
 	generateCardForStudentParking: generateCardForStudentParking,
 	generateCardForLotType: generateCardForLotType,
 	generateCardForWeather: generateCardForWeather,
-	generateCardForGoose: generateCardForGoose
+	generateCardForGoose: generateCardForGoose,
+	generateCardForLotName: generateCardForLotName
 };
+
+function generateCardForLotName(data, intent) {
+	var card = {};
+	card.type = "Standard";
+	card.title = ("Lot " + intent.slots.LotName.value);
+	card.text = "";
+	const data_len = data.length;
+
+	for (var i = 0; i < data_len; i++) {
+		const cur_data = data[i];
+		card.text += ("Lot " + cur_data.lot_name + " : " + cur_data.lot_type + "\n");
+		if (cur_data.additional_info) {
+			card.text += ("Additional Information: " + cur_data.additional_info + " \n");
+		}
+	}
+
+	return card;
+}
 
 function generateCardForGoose(data, intent) {
 	var card = {};
