@@ -4,10 +4,10 @@ This module fetches info from UW Open API
 *********************************/
 
 const request = require('request');
+const secret = require('./secret.js');
 const base_url_parking = "https://api.uwaterloo.ca/v2/parking/";
 const base_url_weather = "https://api.uwaterloo.ca/v2/weather/current.json";
 const base_url_resources = "https://api.uwaterloo.ca/v2/resources/";
-const token = "da4f8f38697f99b07a89ce05c3dcf755";
 const parking_request_types = ["watpark", "meter", "permit", "visitor",
     "shortterm", "accessible", "motorcycle"];
 
@@ -17,10 +17,10 @@ module.exports = {
 
 function getUrl(request_type) { // get appropriate url
     if (request_type == "weather") { // weather request
-        return (base_url_weather + "?key=" + token);
+        return (base_url_weather + "?key=" + secret.token);
     }
     else if (request_type == "goosewatch") {
-        return (base_url_resources + "goosewatch.json?key=" + token);
+        return (base_url_resources + "goosewatch.json?key=" + secret.token);
     }
     var index = parking_request_types.indexOf(request_type);
     switch (index) {
@@ -29,11 +29,11 @@ function getUrl(request_type) { // get appropriate url
             return "BAD_REQ_TYPE"; break;
 
         case 0:
-            return (base_url_parking + "watpark.json?key=" + token);
+            return (base_url_parking + "watpark.json?key=" + secret.token);
             break;
 
         default:
-            return (base_url_parking + "lots/" + request_type + ".json?key=" + token);
+            return (base_url_parking + "lots/" + request_type + ".json?key=" + secret.token);
     }
 }
 
