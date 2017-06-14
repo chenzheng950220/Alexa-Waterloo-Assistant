@@ -14,7 +14,9 @@ module.exports = {
 function getWeatherInfo(callback, intent) {
 	var card = null; var speech_out = "";
 	// Add card support
-	const request_type = "weather";
+	const request_type = {
+		type: "weather"
+	};
 	api_manager.getJSON(function(data) {
 		if (data == "ERROR") {
 			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);

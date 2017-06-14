@@ -13,7 +13,9 @@ module.exports = {
 
 function getGooseInfo(callback, intent) {
 	var card = null; var speech_out = "";
-	const request_type = "goosewatch";
+	var request_type = {
+		type: "goosewatch"
+	};
 	api_manager.getJSON(function(data) {
 		if (data == "ERROR") {
 			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);

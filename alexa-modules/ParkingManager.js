@@ -16,7 +16,10 @@ module.exports = {
 };
 
 function getStudentParkingInfo(callback, intent) {
-	var request_type = "watpark";
+	var request_type = {
+		type: "parking",
+		parking_type: "watpark"
+	};
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = {};
 		if (data == "ERROR") {
@@ -93,13 +96,16 @@ function getInfoForParkingLotNameConatins(callback, intent) {
 }
 
 function getInfoForParkingLot(callback, intent) { // get information for a parking type
-	var request_type = "";
+	var request_type = {};
 	if (intent.slots.LotType.value === undefined) {
 		getInfoForParkingLotName(callback, intent);
 		return;
 	}
 	else {
-		request_type = intent.slots.LotType.value;
+		request_type = {
+			type: "parking",
+			parking_type: intent.slots.LotType.value
+		};
 	}
 	api_manager.getJSON(function(data) {
 		var speech_out = ""; var card = null;
