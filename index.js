@@ -8,6 +8,7 @@ const parking_manager = require('./alexa-modules/ParkingManager.js');
 const speech_manager = require('./alexa-modules/SpeechManager.js');
 const weather_manager = require('./alexa-modules/WeatherManager.js');
 const goose_manager = require('./alexa-modules/GooseManager.js');
+const course_manager = require('./alexa-modules/CourseManager.js');
 
 const REQ_LAUNCH = "LaunchRequest";
 const REQ_INT = "IntentRequest";
@@ -20,6 +21,7 @@ const INT_ASK_STD_PK = "AskStudentParkingInfo";
 const INT_YES = "YesIntent";
 const INT_WEATHER = "AskWeather";
 const INT_GOOSE = "AskGooseWatch";
+const INT_COURSE_INFO = "AskCourseInfo";
 
 // handle the incoming request from http server, not the lambda server
 exports.server_handler = function (event, callback) {
@@ -152,6 +154,10 @@ function onIntent(intentRequest, session, context, callback) {
             handleGooseWatchIntent(intent, session, context, callback);
             break;
 
+        case INT_COURSE_INFO:
+            handleAskCourseInfoIntent(intent, session, context, callback);
+            break;
+
         default:
             throw "ERROR: Invalid intent";
     }
@@ -220,6 +226,12 @@ function handleWeatherIntent(intent, session, context, callback) {
     weather_manager.getWeatherInfo(function(ret_val) {
         callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
     }, intent);
+}
+
+function handleAskCourseInfoIntent(intent, session, context, callback) {
+    course_manager.getCourseInfo(intent, function([card, speech_out]) {
+        callback(null, buildSpeechletResponseSimple(card, speech_out));
+    });
 }
 
 // ------- Helper functions to build responses for Alexa -------
