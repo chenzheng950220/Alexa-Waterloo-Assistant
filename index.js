@@ -53,7 +53,8 @@ exports.server_handler = function (event, callback) {
                 break;
 
             default:
-                throw "ERROR: Bad Request from AVS! ";
+                console.error("ERROR: Bad Request from AVS! ");
+                callback({}, {});
         }
     } catch (e) {
         callback("Exception: " + e);
@@ -91,7 +92,8 @@ exports.handler = function (event, context) {
                 break;
 
             default:
-                throw "ERROR: Bad Request from AVS! ";
+                console.error("ERROR: Bad Request from AVS! ");
+
         }
     } catch (e) {
         context.fail("Exception: " + e);
@@ -168,7 +170,7 @@ function onIntent(intentRequest, session, context, callback) {
  * Is not called when the skill returns shouldEndSession=true.
  */
 function onSessionEnded(sessionEndedRequest, session) {
-    return;
+
 }
 
 // ------- Skill specific logic -------
@@ -191,24 +193,34 @@ function handleStopIntent(callback) {
 
 function handleGooseWatchIntent(intent, session, context, callback) {
     goose_manager.getGooseInfo(function(ret_val) {
-        var session_flag = false;
-        callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
+        if (ret_val.error_flag) { // error occured in goose manager
+            callback(null, buildSpeechletResponseSimple(null, ret_val.error_msg));
+        }
+        else {
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+        }
     }, intent);
-
 }
 
 function handleAskParkingInfoIntent(intent, session, context, callback) {
     parking_manager.getInfoForParkingLot(function(ret_val) {
-        var session_flag = true;
-        if (ret_val[0]) { session_flag = false; }
-        callback(ret_val[0], buildSpeechletResponseSession(ret_val[2], ret_val[1], session_flag));
-        // do not end session here, in case user wants to here detail info on parking type
+        if (ret_val.error_flag) { // error handling
+            callback(null, buildSpeechletResponseSession(null, ret_val.error_msg, ret_val.session_flag));
+        }
+        else {
+            callback(ret_val.session_attr, buildSpeechletResponseSession(ret_val.card, ret_val.speech_out, ret_val.session_flag));
+        }
     }, intent);
 }
 
 function handleAskStudentParkingIntent(intent, session, context, callback) {
     parking_manager.getStudentParkingInfo(function(ret_val) {
-        callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
+        if (ret_val.error_flag) { // error handling
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
+        }
+        else {
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+        }
     }, intent);
 }
 
@@ -224,13 +236,23 @@ function handleYesIntent(intent, session, context, callback) {
 
 function handleWeatherIntent(intent, session, context, callback) {
     weather_manager.getWeatherInfo(function(ret_val) {
-        callback(null, buildSpeechletResponseSimple(ret_val[0], ret_val[1]));
+        if (ret_val.error_flag) { // error handling
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
+        }
+        else {
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+        }
     }, intent);
 }
 
 function handleAskCourseInfoIntent(intent, session, context, callback) {
-    course_manager.getCourseInfo(intent, function([card, speech_out]) {
-        callback(null, buildSpeechletResponseSimple(card, speech_out));
+    course_manager.getCourseInfo(intent, function(ret_val) {
+        if (ret_val.error_flag) { // error handling
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
+        }
+        else {
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+        }
     });
 }
 

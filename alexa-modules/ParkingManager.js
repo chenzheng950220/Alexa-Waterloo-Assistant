@@ -16,30 +16,54 @@ module.exports = {
 };
 
 function getStudentParkingInfo(callback, intent) {
+    var ret_val = {
+        error_flag: false,
+        error_msg: "",
+        speech_out: "",
+        card: null,
+        session_flag: true,
+        session_attr: null
+    };
+
 	var request_type = {
 		type: "parking",
 		parking_type: "watpark"
 	};
 	api_manager.getJSON(function(data) {
-		var speech_out = ""; var card = {};
-		if (data == "ERROR") {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
+		if (data === "ERROR") {
+			ret_val.error_flag = true;
+			ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
+			callback(ret_val);
 		}
-		else if (data.data === undefined) {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
+		else if (data === "EMPTY") {
+            ret_val.error_flag = true;
+            ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
+            callback(ret_val);
 		}
-		card = card_manager.generateCardForStudentParking(data, intent);
-		speech_out += speech_manager.generateSpeechForStudentParking(data,intent);
-		callback([card, speech_out]);
+		else {
+            ret_val.card = card_manager.generateCardForStudentParking(data, intent);
+            ret_val.speech_out += speech_manager.generateSpeechForStudentParking(data,intent);
+            callback(ret_val);
+		}
 	}, request_type);
 }
 
 function getInfoForParkingLotName(callback, intent) {
+    var ret_val = {
+        error_flag: false,
+        error_msg: "",
+        speech_out: "",
+        card: null,
+        session_flag: true,
+        session_attr: null
+    };
+
 	// get information for one specific parking lot name
 	var request_lot = "";
-	var speech_out = ""; var card = null;
 	if (intent.slots.LotName.value === undefined) {
-		callback([null, speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_MISS, null]);
+		ret_val.error_flag = true;
+		ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_LOT_INFO_MISS;
+		callback(ret_val); return;
 	}
 	else {
 		request_lot = intent.slots.LotName.value;
@@ -48,8 +72,9 @@ function getInfoForParkingLotName(callback, intent) {
 	// get info from db
 	db_manager.queryLotNameEquals(request_lot, function(err, data) {
 		if (err) {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_DB_ERROR, null]);
-			return; // no need to continue here
+			ret_val.error_flag = true;
+			ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_DB_ERROR;
+			callback(ret_val);
 		}
 		else {
 			data.Items = util.combineParkingLots(data.Items);
@@ -61,35 +86,44 @@ function getInfoForParkingLotName(callback, intent) {
 				getInfoForParkingLotNameConatins(callback, intent);
 			}
 			else {
-				speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
-				card = card_manager.generateCardForLotName(data.Items, intent);
-				callback([null, speech_out, card]); // no need to continue session here, set [0] to null
-				return; // this function should be terminated here, request success
+				ret_val.speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
+				ret_val.card = card_manager.generateCardForLotName(data.Items, intent);
+				callback(ret_val); // no need to continue session here, set [0] to null
 			}
 		}
 	});
 }
 
 function getInfoForParkingLotNameConatins(callback, intent) {
+    var ret_val = {
+        error_flag: false,
+        error_msg: "",
+        speech_out: "",
+        card: null,
+        session_flag: true,
+        session_attr: null
+    };
+
 	var request_lot = intent.slots.LotName.value;
-	var speech_out = ""; var card = null;
 	// try to use contains condition for current request
 	db_manager.queryLotNameContains(request_lot, function(err, data) {
 		if (err) {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_DB_ERROR, null]);
-			return; // no need to continue here
+			ret_val.error_flag = true;
+			ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_DB_ERROR;
+			callback(ret_val);
 		}
 		else {
 			data.Items = util.combineParkingLots(data.Items);
 			if (data.Items.length === 0) {
+				ret_val.error_flag = true;
+				ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_DB_EMPTY;
 				// still gives no response, prompt user error message, cannot handle!
-				callback([null, speech_manager.generateGeneralSpeech().SPEECH_DB_EMPTY, null]);
-				return; // no need to continue here
+				callback(ret_val);
 			}
 			else {
-				speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
-				card = card_manager.generateCardForLotName(data.Items, intent);
-				callback([null, speech_out, card]); // no need to continue session here, set [0] to null
+				ret_val.speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
+				ret_val.card = card_manager.generateCardForLotName(data.Items, intent);
+				callback(ret_val); // no need to continue session here, set [0] to null
 			}
 		}
 	});
@@ -97,23 +131,36 @@ function getInfoForParkingLotNameConatins(callback, intent) {
 
 function getInfoForParkingLot(callback, intent) { // get information for a parking type
 	var request_type = {};
-	if (intent.slots.LotType.value === undefined) {
+    var ret_val = {
+        error_flag: false,
+        error_msg: "",
+        speech_out: "",
+        card: null,
+        session_flag: true,
+        session_attr: null
+    };
+
+	if (intent.slots.LotType.value === undefined) { // asking about a specific lot
 		getInfoForParkingLotName(callback, intent);
-		return;
 	}
-	else {
+	else { // asking about a lot type
 		request_type = {
 			type: "parking",
 			parking_type: intent.slots.LotType.value
 		};
+        api_manager.getJSON(function(data) {
+            if (data === "ERROR") {
+            	ret_val.error_flag = true;
+            	ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
+                callback(ret_val);
+            }
+            else {
+            	ret_val.session_flag = false; // don't end session here
+                ret_val.speech_out += speech_manager.generateSpeechForLotType(data, intent);
+                ret_val.card = card_manager.generateCardForLotType(data, intent);
+                ret_val.session_attr = data;
+                callback (ret_val);
+			}
+        }, request_type);
 	}
-	api_manager.getJSON(function(data) {
-		var speech_out = ""; var card = null;
-		if (data == "ERROR") {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ, null]);
-		}
-		speech_out += speech_manager.generateSpeechForLotType(data, intent);
-		card = card_manager.generateCardForLotType(data, intent);
-		callback ([data, speech_out, card]);
-	}, request_type);
 }

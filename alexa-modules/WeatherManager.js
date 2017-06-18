@@ -12,20 +12,33 @@ module.exports = {
 };
 
 function getWeatherInfo(callback, intent) {
-	var card = null; var speech_out = "";
-	// Add card support
+    var ret_val = {
+        error_flag: false,
+        error_msg: "",
+        speech_out: "",
+        card: null,
+        session_flag: true,
+        session_attr: null
+    };
+
 	const request_type = {
 		type: "weather"
 	};
 	api_manager.getJSON(function(data) {
-		if (data == "ERROR") {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
+		if (data === "ERROR") {
+			ret_val.error_flag = true;
+			ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
+			callback(ret_val);
 		}
 		else if (data.data === undefined) {
-			callback([null, speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ]);
+            ret_val.error_flag = true;
+            ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
+            callback(ret_val);
 		}
-		card = card_manager.generateCardForWeather(data, intent);
-		speech_out += speech_manager.generateSpeechForWeather(data,intent);
-		callback([card, speech_out]);
+		else {
+            ret_val.card = card_manager.generateCardForWeather(data, intent);
+            ret_val.speech_out += speech_manager.generateSpeechForWeather(data,intent);
+            callback(ret_val);
+        }
 	}, request_type);
 }

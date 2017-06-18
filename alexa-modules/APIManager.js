@@ -45,7 +45,7 @@ function getUrl(request_type) { // get appropriate url
             }
 
         case "course":
-            return "random"
+            return (base_url_course + request_type.subject + "/" + request_type.catelog + ".json?key=" + secret.token);
             break;
 
         default:
@@ -56,25 +56,29 @@ function getUrl(request_type) { // get appropriate url
 function getJSON(callback, request_type) {
     // request_type is a dictionary contains request information
     var url = getUrl(request_type);
-    if (url.substring(0,5) != "https") { callback("ERROR"); }
+    if (url.substring(0,5) !== "https") { callback("ERROR"); }
     request.get(url, function(error, response, body) {
-        if (response.statusCode != 200) {
-            console.log(getUrl(request_type));
-            console.log("ERROR: Http request error: "+response.statusCode);
-            callback("ERROR");
-        }
-        try {
-            var d = JSON.parse(body);
-            if (d !== null) {
-                callback(d);
+        if (response.statusCode === 200) {
+            try {
+                var d = JSON.parse(body);
+                if (d !== null) {
+                    const api_status_code = d.meta.status;
+                    if (api_status_code === 204) { callback("EMPTY"); }
+                    else { callback(d); }
+                }
+                else {
+                    console.log("ERROR: JSON parsing returns null! ");
+                    callback("ERROR");
+                }
             }
-            else {
-                console.log("ERROR: JSON parsing retuns null! ");
+            catch (e) {
+                console.log("ERROR: "+e);
                 callback("ERROR");
             }
         }
-        catch (e) {
-            console.log("ERROR: "+e);
+        else {
+            console.log(getUrl(request_type));
+            console.log("ERROR: Http request error: "+response.statusCode);
             callback("ERROR");
         }
     });
