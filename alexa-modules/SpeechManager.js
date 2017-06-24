@@ -12,7 +12,8 @@ module.exports = {
     addSpeakTag: addSpeakTag,
     generateSpeechForGoose: generateSpeechForGoose,
     generateSpeechForLotName: generateSpeechForLotName,
-    generateSpeechForCourseInfo: generateSpeechForCourseInfo
+    generateSpeechForCourseInfo: generateSpeechForCourseInfo,
+    generateSpeechForCourseTermInfo: generateSpeechForCourseTermInfo
 };
 
 const SPEECH_COURSE_EMPTY = "Sorry, but the course you requested does not exist. Maybe you gave me the wrong course subject or catelogue number. Could you repeat the question again? ";
@@ -31,6 +32,16 @@ const SPEECH_HELP = ("To ask about weather, say how's the weather on campus? To 
 	"permit, motorcycle, accessible, short term, visitor, permit, and meter parking. " + 
 	"Student parking status is updated real-time. You can ask, how's student parking look like? " +
 	"Now, what can I do for you? ");
+
+// course offer term interpretation
+const offered_season = {
+    W: "winter",
+    F: "fall",
+    S: "spring",
+    J: "first half of summer",
+    A: "second half of summer",
+    M: "both terms in summer"
+};
 
 function generateGeneralSpeech() {
 	const dict = {
@@ -64,7 +75,7 @@ function generateSpeechForLotName(data, intent) {
 		}
 	}
 
-	return speech_out;
+	return addSpeakTag(speech_out);
 }
 
 function generateSpeechForGoose(data, intent) {
@@ -259,7 +270,7 @@ function generateSpeechForSingleLot(lot_data) {
 	if (lot_data.additional_info !== undefined) {
 		speech_out += lot_data.additional_info + ". ";
 	}
-	return speech_out;
+	return addSpeakTag(speech_out);;
 }
 
 function addSpeakTag(speech) {
@@ -294,19 +305,10 @@ function generateSpeechForCourseInfo(data, intent) {
     speech_out += description + " ";
     speech_out += generateSpeechForOfferedIn(offered);
 
-    return speech_out;
+    return addSpeakTag(speech_out);;
 }
 
 function generateSpeechForOfferedIn(offered_arr) {
-    const offered_season = {
-        W: "winter",
-        F: "fall",
-        S: "spring",
-        w: "winter",
-        f: "fall",
-        s: "spring"
-    };
-
     // generate speech for offered in
     const offered_len = offered_arr.length;
     var speech_out = "";
@@ -330,5 +332,18 @@ function generateSpeechForOfferedIn(offered_arr) {
         }
     }
 
-    return speech_out;
+    return addSpeakTag(speech_out);;
+}
+
+function generateSpeechForCourseTermInfo(data, intent) {
+    var speech_out = "";
+    const course_data = data.data;
+    const offered = course_data.terms_offered;
+
+    /********************************************
+     I WAS HERE ON JUNE,18 @ 17:57
+     Needs to finish the function to handle yes/no
+     *********************************************/
+
+
 }
