@@ -11,12 +11,12 @@ module.exports = {
     generateSpeechForWeather: generateSpeechForWeather,
     addSpeakTag: addSpeakTag,
     generateSpeechForGoose: generateSpeechForGoose,
-    generateSpeechForLotName: generateSpeechForLotName
+    generateSpeechForLotName: generateSpeechForLotName,
+    generateSpeechForCourseInfo: generateSpeechForCourseInfo
 };
 
-const available_lot_type = ["permit", "motorcycle", "accessible",
-	"short term", "visitor", "permit", "meter"];
-
+const SPEECH_COURSE_EMPTY = "Sorry, but the course you requested does not exist. Maybe you gave me the wrong course subject or catelogue number. Could you repeat the question again? ";
+const SPEECH_COURSE_BAD_REQ = "Sorry, but I need both course subject and catelog number for a course search. Would you mind repeating the question again? ";
 const SPEECH_DB_EMPTY= "Sorry, but the request lot name you asked for did not match any entries in my database. Would you mind repeating your question again? ";
 const SPEECH_DB_ERROR = "Sorry. but I'm having trouble making queries to the database. Would you mind try again later? ";
 const SPEECH_ERROR = "Sorry, but something is wrong with my code. Would you mind repeating your question and try again? ";
@@ -33,19 +33,20 @@ const SPEECH_HELP = ("To ask about weather, say how's the weather on campus? To 
 	"Now, what can I do for you? ");
 
 function generateGeneralSpeech() {
-	var dict = {
-		SPEECH_ERROR: SPEECH_ERROR,
-		SPEECH_BAD_REQ: SPEECH_BAD_REQ,
-		SPEECH_BAD_REQ_TYPE: SPEECH_BAD_REQ_TYPE,
-		SPEECH_NO_RES_MORE_INFO: SPEECH_NO_RES_MORE_INFO,
-		SPEECH_NO_PREV_SESSION: SPEECH_NO_PREV_SESSION,
-		SPEECH_WELCOME: SPEECH_WELCOME,
-		SPEECH_LOT_INFO_MISS: SPEECH_LOT_INFO_MISS,
-		SPEECH_LOT_INFO_TWO: SPEECH_LOT_INFO_TWO,
-		SPEECH_HELP: SPEECH_HELP,
-		SPEECH_DB_ERROR: SPEECH_DB_ERROR,
-		SPEECH_DB_EMPTY: SPEECH_DB_EMPTY
-
+	const dict = {
+		SPEECH_ERROR: addSpeakTag(SPEECH_ERROR),
+		SPEECH_BAD_REQ: addSpeakTag(SPEECH_BAD_REQ),
+		SPEECH_BAD_REQ_TYPE: addSpeakTag(SPEECH_BAD_REQ_TYPE),
+		SPEECH_NO_RES_MORE_INFO: addSpeakTag(SPEECH_NO_RES_MORE_INFO),
+		SPEECH_NO_PREV_SESSION: addSpeakTag(SPEECH_NO_PREV_SESSION),
+		SPEECH_WELCOME: addSpeakTag(SPEECH_WELCOME),
+		SPEECH_LOT_INFO_MISS: addSpeakTag(SPEECH_LOT_INFO_MISS),
+		SPEECH_LOT_INFO_TWO: addSpeakTag(SPEECH_LOT_INFO_TWO),
+		SPEECH_HELP: addSpeakTag(SPEECH_HELP),
+		SPEECH_DB_ERROR: addSpeakTag(SPEECH_DB_ERROR),
+		SPEECH_DB_EMPTY: addSpeakTag(SPEECH_DB_EMPTY),
+        SPEECH_COURSE_BAD_REQ: addSpeakTag(SPEECH_COURSE_BAD_REQ),
+        SPEECH_COURSE_EMPTY: addSpeakTag(SPEECH_COURSE_EMPTY)
 	};
 	return dict;
 }
@@ -110,14 +111,14 @@ function generateSpeechForStudentParking(data, intent) {
 				speech_out += full_lot[k];
 				speech_out += ", ";
 			}
-			if (full_lot.length == 1) {
+			if (full_lot.length === 1) {
 				speech_out += "is ";
 			}
 			else { speech_out += "are "; }
 			speech_out += "full. However, there are still some parking capacities in lot ";
 			for (var l = 0; l < not_full_lot.length; l++) {
 				speech_out += not_full_lot[l];
-				if (l == (not_full_lot.length - 1)) { speech_out += ". "; }
+				if (l === (not_full_lot.length - 1)) { speech_out += ". "; }
 				else { speech_out += ", "; }
 			}
 			break;
@@ -180,14 +181,14 @@ function assessStudentOverallParking(result) {
 	var full = 0; var tense = 0; var normal = 0;
 	for (var i = 0; i < total_lot; i++) {
 		if (result[i] >= 4) { full++; }
-		else if (result[i] == 3) {
+		else if (result[i] === 3) {
 			tense++;
 		}
 		else if (result[i] <= 2) {
 			normal++;
 		}
 	}
-	if (full == total_lot) { return 4; }
+	if (full === total_lot) { return 4; }
 	else if (full !== 0) {
 		return 3;
 	}
@@ -265,15 +266,69 @@ function addSpeakTag(speech) {
 	// Remodify the text, so that it satisfies SSML requirement
 	var speech_len = speech.length;
 	for (var i = 0; i < speech_len; i++) {
-		if (speech[i] == '&') {
+		if (speech[i] === '&') {
 			speech = speech.substring(0, i) + " and " + speech.substring(i+1, speech_len);
 		}
-		else if (speech[i] == '/') {
+		else if (speech[i] === '/') {
 
-			if (i !== 0 && speech[i-1] == '<') { continue; }
-			if (i != (speech_len-1) && speech[i+1] == '>') { continue; }
+			if (i !== 0 && speech[i-1] === '<') { continue; }
+			if (i !== (speech_len-1) && speech[i+1] === '>') { continue; }
 			speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
 		}
 	}
 	return ("<speak> " + speech + "</speak>");
+}
+
+function generateSpeechForCourseInfo(data, intent) {
+    var speech_out = "";
+    const course_data = data.data;
+    const subject = course_data.subject;
+    const catelog = course_data.catalog_number;
+    const title = course_data.title;
+    const description = course_data.description;
+    const offered = course_data.terms_offered;
+
+    speech_out += " <say-as interpret-as=\"characters\">" + subject + "</say-as> "; // say-as, spell the characters of course
+    speech_out += (catelog + ". ");
+    speech_out += (title + ". ");
+    speech_out += description + " ";
+    speech_out += generateSpeechForOfferedIn(offered);
+
+    return speech_out;
+}
+
+function generateSpeechForOfferedIn(offered_arr) {
+    const offered_season = {
+        W: "winter",
+        F: "fall",
+        S: "spring",
+        w: "winter",
+        f: "fall",
+        s: "spring"
+    };
+
+    // generate speech for offered in
+    const offered_len = offered_arr.length;
+    var speech_out = "";
+
+    if (offered_len === 0) {
+        speech_out = "It seems that the course is not offered in the current year. ";
+    }
+    else {
+        speech_out = "This course is offered in ";
+        for (var i = 0; i < offered_len; i++) {
+            const current_term = offered_arr[i];
+            speech_out += "and ";
+            speech_out += offered_season[current_term];
+            if (i === offered_len - 1) { // the last one, append with a .
+                speech_out += ". "
+            }
+            else {
+                speech_out += offered_season[current_term];
+                speech_out += ", "
+            }
+        }
+    }
+
+    return speech_out;
 }
