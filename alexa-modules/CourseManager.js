@@ -29,6 +29,7 @@ function getCourseInfo(intent, callback) {
 	// error checking here
 	if (!course_subject || !course_catelog) { // both catelog & subject must be passed in!
         ret_val.error_flag = true;
+        ret_val.session_flag = false;
 		ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_COURSE_BAD_REQ;
 		callback(ret_val);
 	}
@@ -43,11 +44,13 @@ function getCourseInfo(intent, callback) {
 
             if (data === "ERROR") {
                 ret_val.error_flag = true;
+                ret_val.session_flag = false;
                 ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
                 callback(ret_val);
             }
             else if (data === "EMPTY") {
                 ret_val.error_flag = true;
+                ret_val.session_flag = false;
                 ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_COURSE_EMPTY;
                 callback(ret_val);
             }
@@ -77,6 +80,7 @@ function getCourseOfferInfo(intent, callback) {
     // error checking here
     if (!course_subject || !course_catelog) { // both catelog & subject must be passed in!
         ret_val.error_flag = true;
+        ret_val.session_flag = false;
         ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_COURSE_BAD_REQ;
         callback(ret_val);
     }
@@ -97,11 +101,13 @@ function getCourseOfferInfo(intent, callback) {
 
             if (data === "ERROR") {
                 ret_val.error_flag = true;
+                ret_val.session_flag = false;
                 ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_BAD_REQ;
                 callback(ret_val);
             }
             else if (data === "EMPTY") {
                 ret_val.error_flag = true;
+                ret_val.session_flag = false;
                 ret_val.error_msg = speech_manager.generateGeneralSpeech().SPEECH_COURSE_EMPTY;
                 callback(ret_val);
             }

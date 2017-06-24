@@ -320,9 +320,9 @@ function generateSpeechForOfferedIn(offered_arr) {
         speech_out = "This course is offered in ";
         for (var i = 0; i < offered_len; i++) {
             const current_term = offered_arr[i];
-            speech_out += "and ";
-            speech_out += offered_season[current_term];
             if (i === offered_len - 1) { // the last one, append with a .
+                speech_out += "and ";
+                speech_out += offered_season[current_term];
                 speech_out += ". "
             }
             else {
@@ -332,7 +332,7 @@ function generateSpeechForOfferedIn(offered_arr) {
         }
     }
 
-    return addSpeakTag(speech_out);;
+    return speech_out;
 }
 
 function generateSpeechForCourseTermInfo(data, intent) {

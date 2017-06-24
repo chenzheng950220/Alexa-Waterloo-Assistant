@@ -253,10 +253,10 @@ function handleWeatherIntent(intent, session, context, callback) {
 function handleAskCourseInfoIntent(intent, session, context, callback) {
     course_manager.getCourseInfo(intent, function(ret_val) {
         if (ret_val.error_flag) { // error handling
-            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
+            callback(null, buildSpeechletResponseSession(ret_val.card, ret_val.error_msg, ret_val.session_flag));
         }
         else {
-            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+            callback(null, buildSpeechletResponseSession(ret_val.card, ret_val.speech_out, ret_val.session_flag));
         }
     });
 }
