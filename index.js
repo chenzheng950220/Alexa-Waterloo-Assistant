@@ -22,6 +22,7 @@ const INT_YES = "YesIntent";
 const INT_WEATHER = "AskWeather";
 const INT_GOOSE = "AskGooseWatch";
 const INT_COURSE_INFO = "AskCourseInfo";
+const INT_COURSE_OFFER = "AskCourseOffered";
 
 // handle the incoming request from http server, not the lambda server
 exports.server_handler = function (event, callback) {
@@ -160,6 +161,10 @@ function onIntent(intentRequest, session, context, callback) {
             handleAskCourseInfoIntent(intent, session, context, callback);
             break;
 
+        case INT_COURSE_OFFER:
+            handlerAskCourseOfferIntent(intent, session, context, callback);
+            break;
+
         default:
             throw "ERROR: Invalid intent";
     }
@@ -247,6 +252,17 @@ function handleWeatherIntent(intent, session, context, callback) {
 
 function handleAskCourseInfoIntent(intent, session, context, callback) {
     course_manager.getCourseInfo(intent, function(ret_val) {
+        if (ret_val.error_flag) { // error handling
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
+        }
+        else {
+            callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.speech_out));
+        }
+    });
+}
+
+function handlerAskCourseOfferIntent(intent, session, context, callback) {
+    course_manager.getCourseOfferInfo(intent, function(ret_val) {
         if (ret_val.error_flag) { // error handling
             callback(null, buildSpeechletResponseSimple(ret_val.card, ret_val.error_msg));
         }
