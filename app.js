@@ -35,20 +35,24 @@ function onRequest(req, res) {
     // authenticate the request
     verifySignature(req, body_str, function(cert_veri) {
       if (!cert_veri[0]) { // unauthorised request
-        console.log("ERROR" + cert_veri[1]);
+        console.log("ERROR: " + cert_veri[1]);
         res.writeHead(401, "Authentication failed! ", response_header); 
         res.end();
         return;
       }
+      else { // cert OK
+        handleAlexaRequest(body_json, res, response_header)
+      }
     });
+  });
+}
 
-    // handle request from AVS
-    alexa.server_handler(body_json, function (alexa_response) {
-      var response_json = JSON.stringify(alexa_response);
-      res.writeHead(200, "OK", response_header);
-      if (debug.debug_flag) { console.log(response_json); }
-      res.end(response_json); // write JSON response
-    });
+function handleAlexaRequest(body_json, res, response_header) {
+  alexa.server_handler(body_json, function (alexa_response) {
+    var response_json = JSON.stringify(alexa_response);
+    res.writeHead(200, "OK", response_header);
+    if (debug.debug_flag) { console.log(response_json); }
+    res.end(response_json); // write JSON response
   });
 }
 
