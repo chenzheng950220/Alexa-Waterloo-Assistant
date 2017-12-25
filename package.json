@@ -1,16 +1,16 @@
 {
-	"name": "alexa-uw-assistant-package",
-	"version": "1.0.0",
-	"description": "Real-time parking update developed on Alexa machines",
-	"scripts": {
-		"test": "echo \"ERROR: No test scripts specified! \" && exit 1"
-	},
-	"author": "Zheng Chen",
-	"license": "MIT",
-	"dependencies": {
-		"alexa-sdk": "^1.0.9",
-		"request": "^2.81.0",
-		"alexa-verifier": "^0.3.6",
-		"aws-sdk": "^2.67.0"
-	}
+  "name": "alexa-uw-assistant-package",
+  "version": "1.0.0",
+  "description": "Real-time parking update developed on Alexa machines",
+  "scripts": {
+    "test": "echo \"ERROR: No test scripts specified! \" && exit 1"
+  },
+  "author": "Zheng Chen",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-sdk": "^1.0.9",
+    "request": "^2.81.0",
+    "alexa-verifier": "^0.3.6",
+    "aws-sdk": "^2.67.0"
+  }
 }
