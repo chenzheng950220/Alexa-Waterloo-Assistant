@@ -40,8 +40,6 @@ function getCourseInfo(intent, callback) {
       subject: course_subject
     };
     api_manager.getJSON(function(data) {
-      if (debug.debug_flag) { console.log(data); }
-
       if (data === "ERROR") {
         ret_val.error_flag = true;
         ret_val.session_flag = false;
@@ -85,9 +83,6 @@ function getCourseOfferInfo(intent, callback) {
     callback(ret_val);
   }
   else if (!course_term) {
-    if (debug.debug_flag) {
-      console.error("WARNING: Term is not passed in when getCourseOfferInfo was requested, give course info instead. ");
-    }
     getCourseInfo(intent, callback);
   }
   else { // enough info passed in
@@ -97,8 +92,6 @@ function getCourseOfferInfo(intent, callback) {
       subject: course_subject
     };
     api_manager.getJSON(function(data) {
-      if (debug.debug_flag) { console.log(data); }
-
       if (data === "ERROR") {
         ret_val.error_flag = true;
         ret_val.session_flag = false;

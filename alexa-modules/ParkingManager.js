@@ -79,16 +79,16 @@ function getInfoForParkingLotName(callback, intent) {
   else {
     data.Items = util.combineParkingLots(data.Items);
     if (data.Items.length === 0) {
-    // query gives empty, try another approach, give debug info here
-    if (debug.debug_flag) {
-      console.log("WARNING: Database query gave an empty response. Trying to use contains condition. ");
-    }
-    getInfoForParkingLotNameConatins(callback, intent);
+      // query gives empty, try another approach, give debug info here
+      if (debug.debug_flag) {
+        console.log("WARNING: Database query gave an empty response. Trying to use contains condition. ");
+      }
+      getInfoForParkingLotNameConatins(callback, intent);
     }
     else {
-    ret_val.speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
-    ret_val.card = card_manager.generateCardForLotName(data.Items, intent);
-    callback(ret_val); // no need to continue session here, set [0] to null
+      ret_val.speech_out += speech_manager.generateSpeechForLotName(data.Items, intent);
+      ret_val.card = card_manager.generateCardForLotName(data.Items, intent);
+      callback(ret_val); // no need to continue session here, set [0] to null
     }
   }
   });

@@ -40,9 +40,5 @@ function combineParkingLots(data) {
       names[data[i].lot_name] =i;
     }
   }
-
-  if (debug.debug_flag) {
-    console.log(data);
-  }
   return data;
 }
