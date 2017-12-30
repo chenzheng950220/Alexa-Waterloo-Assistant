@@ -22,11 +22,9 @@ function getUrl(request_type) { // get appropriate url
   switch (type) {
     case "weather":
       return (base_url_weather + "?key=" + secret.token);
-      break;
 
     case "goosewatch":
       return (base_url_resources + "goosewatch.json?key=" + secret.token);
-      break;
 
     case "parking":
       var parking_type = request_type.parking_type;
@@ -34,19 +32,18 @@ function getUrl(request_type) { // get appropriate url
       switch (index) {
       case -1:
         console.log("ERROR: Wrong type passed in request_type: "+request_type);
-        return "BAD_REQ_TYPE"; break;
+        return "BAD_REQ_TYPE";
 
       case 0:
         return (base_url_parking + "watpark.json?key=" + secret.token);
-        break;
 
       default:
         return (base_url_parking + "lots/" + parking_type + ".json?key=" + secret.token);
       }
+      break;
 
     case "course":
       return (base_url_course + request_type.subject + "/" + request_type.catelog + ".json?key=" + secret.token);
-      break;
 
     default:
       return "ERROR";

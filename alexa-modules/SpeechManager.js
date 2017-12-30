@@ -239,8 +239,7 @@ function generateSpeechForLotType(data, intent) {
   var total_lot = data.data.length;
   var lot_type = intent.slots.LotType.value;
   if (lot_type === undefined) {
-  console.log("ERROR: LotType is empty in generateSpeechForLotType!");
-  throw "ERROR";
+    throw "ERROR";
   }
   var speech_out = "";
   speech_out += ("There are " + total_lot + " " + lot_type + " parking lots. ");
@@ -270,7 +269,7 @@ function generateSpeechForSingleLot(lot_data) {
   if (lot_data.additional_info !== undefined) {
   speech_out += lot_data.additional_info + ". ";
   }
-  return addSpeakTag(speech_out);;
+  return addSpeakTag(speech_out);
 }
 
 function addSpeakTag(speech) {
@@ -305,7 +304,7 @@ function generateSpeechForCourseInfo(data, intent) {
   speech_out += description + " ";
   speech_out += generateSpeechForOfferedIn(offered);
 
-  return addSpeakTag(speech_out);;
+  return addSpeakTag(speech_out);
 }
 
 function generateSpeechForOfferedIn(offered_arr) {
@@ -323,11 +322,11 @@ function generateSpeechForOfferedIn(offered_arr) {
       if (i === offered_len - 1) { // the last one, append with a .
         speech_out += "and ";
         speech_out += offered_season[current_term];
-        speech_out += ". "
+        speech_out += ". ";
       }
       else {
         speech_out += offered_season[current_term];
-        speech_out += ", "
+        speech_out += ", ";
       }
     }
   }

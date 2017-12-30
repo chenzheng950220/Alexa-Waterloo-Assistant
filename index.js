@@ -1,4 +1,3 @@
-'use strict';
 const Alexa = require('alexa-sdk');
 const util = require('util');
 
@@ -54,7 +53,6 @@ exports.server_handler = function (event, callback) {
         break;
 
       default:
-        console.error("ERROR: Bad Request from AVS! ");
         callback({}, {});
     }
   } catch (e) {
@@ -93,7 +91,6 @@ exports.handler = function (event, context) {
         break;
 
       default:
-        console.error("ERROR: Bad Request from AVS! ");
 
     }
   } catch (e) {

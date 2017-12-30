@@ -22,8 +22,8 @@ function getUrl(type) {
 
 function getData(type, callback) {
   request.get(getUrl(type), function(error, response, body) {
-    if (response.statusCode != 200) {
-      console.error("ERROR: API gave a bad response code. ");
+    if (response.statusCode !== 200) {
+      console.log("ERROR: API gave a bad response code. ");
       callback("ERROR");
     }
     try {
@@ -36,7 +36,7 @@ function getData(type, callback) {
       }
     }
     catch (e) {
-      console.error("ERROR: " + e);
+      console.log("ERROR: " + e);
       callback("ERROR");
     }
   });
@@ -75,7 +75,7 @@ function batchInsert() {
 function insertData(params) {
   client.put(params, function(err, data) {
     if (err) {
-      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      console.log("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
     }
   });
 }
