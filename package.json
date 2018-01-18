@@ -8,9 +8,9 @@
   "author": "Zheng Chen",
   "license": "MIT",
   "dependencies": {
-    "alexa-sdk": "^1.0.9",
+    "alexa-sdk": "^1.0.25",
     "alexa-verifier": "^0.3.6",
-    "aws-sdk": "^2.176.0",
+    "aws-sdk": "^2.184.0",
     "request": "^2.81.0"
   }
 }
