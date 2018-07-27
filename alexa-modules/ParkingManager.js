@@ -10,11 +10,6 @@ const db_manager = require("./DBManager.js");
 const debug = require("./Debug.js");
 const util = require("./Util.js");
 
-module.exports = {
-  getInfoForParkingLot: getInfoForParkingLot,
-  getStudentParkingInfo: getStudentParkingInfo
-};
-
 function getStudentParkingInfo(callback, intent) {
   var ret_val = {
     error_flag: false,
@@ -164,3 +159,7 @@ function getInfoForParkingLot(callback, intent) { // get information for a parki
     }, request_type);
   }
 }
+
+module.exports = {
+  getInfoForParkingLot, getStudentParkingInfo
+};

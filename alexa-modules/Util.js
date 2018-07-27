@@ -4,10 +4,6 @@ Handy function that might be used
 
 const debug = require("./Debug.js");
 
-module.exports = {
-  combineParkingLots: combineParkingLots
-};
-
 function combineParkingLots(data) {
   /*
   This handles the response from the database request, when a lot name
@@ -42,3 +38,5 @@ function combineParkingLots(data) {
   }
   return data;
 }
+
+module.exports = { combineParkingLots };

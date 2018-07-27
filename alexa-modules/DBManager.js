@@ -3,11 +3,6 @@ This modules manages DynamoDB:
 query, scan, update...
 ******************************/
 
-module.exports = {
-  queryLotNameContains: queryLotNameContains,
-  queryLotNameEquals: queryLotNameEquals
-};
-
 const AWS = require("aws-sdk");
 const request = require("request");
 AWS.config.update({
@@ -50,3 +45,6 @@ function queryLotNameContains(lot_name, callback) {
   client.scan(query_params, callback);
 }
 
+module.exports = {
+  queryLotNameContains, queryLotNameEquals
+};

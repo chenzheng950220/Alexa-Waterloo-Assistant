@@ -7,10 +7,6 @@ const api_manager = require("./APIManager.js");
 const speech_manager = require("./SpeechManager.js");
 const card_manager = require("./CardManager.js");
 
-module.exports = {
-  getGooseInfo: getGooseInfo
-};
-
 function getGooseInfo(callback, intent) {
   var request_type = {
     type: "goosewatch"
@@ -43,3 +39,4 @@ function getGooseInfo(callback, intent) {
   }, request_type);
 }
 
+module.exports = { getGooseInfo };

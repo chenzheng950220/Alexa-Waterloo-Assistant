@@ -12,10 +12,6 @@ const base_url_course = "https://api.uwaterloo.ca/v2/courses/";
 const parking_request_types = ["watpark", "meter", "permit", "visitor",
   "shortterm", "accessible", "motorcycle"];
 
-module.exports = {
-  getJSON: getJSON
-};
-
 function getUrl(request_type) { // get appropriate url
   const type = request_type.type;
 
@@ -80,3 +76,5 @@ function getJSON(callback, request_type) {
     }
   });
 }
+
+module.exports = { getJSON };

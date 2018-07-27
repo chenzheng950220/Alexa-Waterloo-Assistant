@@ -8,11 +8,6 @@ const speech_manager = require("./SpeechManager.js");
 const card_manager = require("./CardManager.js");
 const debug = require("./Debug.js");
 
-module.exports = {
-  getCourseInfo: getCourseInfo,
-  getCourseOfferInfo: getCourseOfferInfo
-};
-
 function getCourseInfo(intent, callback) {
   var ret_val = {
     error_flag: false,
@@ -113,3 +108,6 @@ function getCourseOfferInfo(intent, callback) {
   }
 }
 
+module.exports = {
+  getCourseInfo, getCourseOfferInfo
+};

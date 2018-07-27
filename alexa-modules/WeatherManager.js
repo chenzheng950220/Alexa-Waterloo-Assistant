@@ -7,10 +7,6 @@ const api_manager = require("./APIManager.js");
 const card_manager = require("./CardManager.js");
 const speech_manager = require("./SpeechManager.js");
 
-module.exports = {
-  getWeatherInfo: getWeatherInfo
-};
-
 function getWeatherInfo(callback, intent) {
   var ret_val = {
     error_flag: false,
@@ -42,3 +38,5 @@ function getWeatherInfo(callback, intent) {
     }
   }, request_type);
 }
+
+module.exports = { getWeatherInfo };

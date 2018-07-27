@@ -3,19 +3,6 @@ Parking Manager for Alexa
 This module generates complete sentences.
 *********************************/
 
-module.exports = {
-  generateSpeechForLotType: generateSpeechForLotType,
-  generateGeneralSpeech: generateGeneralSpeech,
-  generateSpeechForStudentParking: generateSpeechForStudentParking,
-  generateSpeechForDetailLotType: generateSpeechForDetailLotType,
-  generateSpeechForWeather: generateSpeechForWeather,
-  addSpeakTag: addSpeakTag,
-  generateSpeechForGoose: generateSpeechForGoose,
-  generateSpeechForLotName: generateSpeechForLotName,
-  generateSpeechForCourseInfo: generateSpeechForCourseInfo,
-  generateSpeechForCourseTermInfo: generateSpeechForCourseTermInfo
-};
-
 const SPEECH_COURSE_EMPTY = "Sorry, but the course you requested does not exist. Maybe you gave me the wrong course subject or catelogue number. Could you repeat the question again? ";
 const SPEECH_COURSE_BAD_REQ = "Sorry, but I need both course subject and catelog number for a course search. Would you mind repeating the question again? ";
 const SPEECH_DB_EMPTY= "Sorry, but the request lot name you asked for did not match any entries in my database. Would you mind repeating your question again? ";
@@ -349,3 +336,11 @@ function generateSpeechForCourseTermInfo(data, intent) {
 
 
 }
+
+module.exports = {
+  generateSpeechForLotType, generateGeneralSpeech,
+  generateSpeechForStudentParking, generateSpeechForDetailLotType,
+  generateSpeechForWeather, addSpeakTag,
+  generateSpeechForGoose, generateSpeechForLotName,
+  generateSpeechForCourseInfo, generateSpeechForCourseTermInfo
+};
