@@ -10,7 +10,7 @@ AWS.config.update({
   endpoint: "https://dynamodb.us-east-1.amazonaws.com"
 });
 
-var dynamodb = new AWS.DynamoDB();;
+var dynamodb = new AWS.DynamoDB();
 var client = new AWS.DynamoDB.DocumentClient();
 const table = "UWParking";
 const base_url = "https://api.uwaterloo.ca/v2/parking/lots/";
@@ -18,6 +18,15 @@ const token = "key=da4f8f38697f99b07a89ce05c3dcf755";
 
 function getUrl(type) {
   return (base_url + type + ".json?" + token);
+}
+
+
+function insertData(params) {
+  client.put(params, function(err, data) {
+    if (err) {
+      console.log("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+    }
+  });
 }
 
 function getData(type, callback) {
@@ -44,9 +53,7 @@ function getData(type, callback) {
 
 function insertSingleData(p_data, type) {
   const parking_data = p_data.data;
-  const arr_len = parking_data.length;
-  for (var i = 0; i < arr_len; i++) {
-    const current_lot = parking_data[i];
+  parking_data.forEach(function(current_lot) {
     var put_params = {
       TableName: table,
       Item: {
@@ -55,29 +62,21 @@ function insertSingleData(p_data, type) {
         description: current_lot.description,
         additional_info: current_lot.additional_info
       }
-    }
+    };
+
     insertData(put_params);
-  }
+  });
 }
 
 function batchInsert() {
   var parking_types = ["meter", "permit", "visitor",
     "shortterm", "accessible", "motorcycle"];
-  for (var i = 0; i < parking_types.length; i++) {
-    const current_type = parking_types[i];
-    getData(parking_types[i], function(p_data) {
+
+  parking_types.forEach(function(current_type) {
+    getData(current_type, function(p_data) {
       insertSingleData(p_data, current_type);
     });
-  }
-  
-}
-
-function insertData(params) {
-  client.put(params, function(err, data) {
-    if (err) {
-      console.log("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-    }
-  });
+  });  
 }
 
 batchInsert();
