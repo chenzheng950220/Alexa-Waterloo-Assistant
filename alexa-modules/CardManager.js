@@ -4,12 +4,12 @@ This module generates card for displaying.
 *********************************/
 
 module.exports = {
-  generateCardForStudentParking() generateCardForStudentParking,
-  generateCardForLotType() generateCardForLotType,
-  generateCardForWeather() generateCardForWeather,
-  generateCardForGoose() generateCardForGoose,
-  generateCardForLotName() generateCardForLotName,
-  generateCardForCourseInfo() generateCardForCourseInfo
+  generateCardForStudentParking: generateCardForStudentParking,
+  generateCardForLotType: generateCardForLotType,
+  generateCardForWeather: generateCardForWeather,
+  generateCardForGoose: generateCardForGoose,
+  generateCardForLotName: generateCardForLotName,
+    generateCardForCourseInfo: generateCardForCourseInfo
 };
 
 function generateCardForLotName(data, intent) {

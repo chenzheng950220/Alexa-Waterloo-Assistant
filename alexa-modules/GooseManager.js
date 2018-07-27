@@ -8,7 +8,7 @@ const speech_manager = require("./SpeechManager.js");
 const card_manager = require("./CardManager.js");
 
 module.exports = {
-  getGooseInfo() getGooseInfo
+  getGooseInfo: getGooseInfo
 };
 
 function getGooseInfo(callback, intent) {
