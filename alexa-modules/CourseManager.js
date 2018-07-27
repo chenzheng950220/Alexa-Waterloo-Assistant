@@ -9,8 +9,8 @@ const card_manager = require("./CardManager.js");
 const debug = require("./Debug.js");
 
 module.exports = {
-  getCourseInfo: getCourseInfo,
-  getCourseOfferInfo: getCourseOfferInfo
+  getCourseInfo() getCourseInfo,
+  getCourseOfferInfo() getCourseOfferInfo
 };
 
 function getCourseInfo(intent, callback) {
