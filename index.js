@@ -23,81 +23,6 @@ const INT_GOOSE = "AskGooseWatch";
 const INT_COURSE_INFO = "AskCourseInfo";
 const INT_COURSE_OFFER = "AskCourseOffered";
 
-// handle the incoming request from http server, not the lambda server
-exports.server_handler = function (event, callback) {
-  try {
-    if (event.session.new) {
-      onSessionStarted({requestId: event.request.requestId}, event.session);
-    }
-
-    switch (event.request.type) {
-      case REQ_LAUNCH:
-        onLaunch(event.request, event.session,
-          function(sessionAttributes, speechletResponse) {
-            callback(buildResponse(sessionAttributes, speechletResponse));
-          });
-        break;
-
-      case REQ_INT:
-        console.log(util.inspect(event, false, null));
-        onIntent(event.request,
-          event.session, event.context,
-          function(sessionAttributes, speechletResponse) {
-            callback(buildResponse(sessionAttributes, speechletResponse));
-          });
-        break;
-
-      case REQ_SESSION_END:
-        onSessionEnded(event.request, event.session);
-        callback({}, {});
-        break;
-
-      default:
-        callback({}, {});
-    }
-  } catch (e) {
-    callback("Exception: " + e);
-  }
-};
-
-// Route the incoming request based on type (LaunchRequest, IntentRequest,
-// etc.) The JSON body of the request is provided in the event parameter.
-exports.handler = function (event, context) {
-  try {
-    if (event.session.new) {
-      onSessionStarted({requestId: event.request.requestId}, event.session);
-    }
-
-    switch (event.request.type) {
-      case REQ_LAUNCH:
-        onLaunch(event.request, event.session,
-          function callback(sessionAttributes, speechletResponse) {
-            context.succeed(buildResponse(sessionAttributes, speechletResponse));
-          });
-        break;
-
-      case REQ_INT:
-        console.log(util.inspect(event, false, null));
-        onIntent(event.request,
-          event.session, event.context,
-          function callback(sessionAttributes, speechletResponse) {
-            context.succeed(buildResponse(sessionAttributes, speechletResponse));
-          });
-        break;
-
-      case REQ_SESSION_END:
-        onSessionEnded(event.request, event.session);
-        context.succeed();
-        break;
-
-      default:
-
-    }
-  } catch (e) {
-    context.fail("Exception: " + e);
-  }
-};
-
 /**
  * Called when the session starts.
  */
@@ -298,10 +223,84 @@ function buildSpeechletResponseSession(card, output, session_end) {
 function buildResponse(sessionAttributes, speechletResponse) {
   return {
     version: "1.0",
-    sessionAttributes: sessionAttributes,
-    response: speechletResponse
+    sessionAttributes() sessionAttributes,
+    response() speechletResponse
   };
 }
 
+// ------- Main request handler -------
 
+// handle the incoming request from http server, not the lambda server
+exports.server_handler = function (event, callback) {
+  try {
+    if (event.session.new) {
+      onSessionStarted({requestId: event.request.requestId}, event.session);
+    }
 
+    switch (event.request.type) {
+      case REQ_LAUNCH:
+        onLaunch(event.request, event.session,
+          function(sessionAttributes, speechletResponse) {
+            callback(buildResponse(sessionAttributes, speechletResponse));
+          });
+        break;
+
+      case REQ_INT:
+        console.log(util.inspect(event, false, null));
+        onIntent(event.request,
+          event.session, event.context,
+          function(sessionAttributes, speechletResponse) {
+            callback(buildResponse(sessionAttributes, speechletResponse));
+          });
+        break;
+
+      case REQ_SESSION_END:
+        onSessionEnded(event.request, event.session);
+        callback({}, {});
+        break;
+
+      default:
+        callback({}, {});
+    }
+  } catch (e) {
+    callback("Exception: " + e);
+  }
+};
+
+// Route the incoming request based on type (LaunchRequest, IntentRequest,
+// etc.) The JSON body of the request is provided in the event parameter.
+exports.handler = function (event, context) {
+  try {
+    if (event.session.new) {
+      onSessionStarted({requestId: event.request.requestId}, event.session);
+    }
+
+    switch (event.request.type) {
+      case REQ_LAUNCH:
+        onLaunch(event.request, event.session,
+          function callback(sessionAttributes, speechletResponse) {
+            context.succeed(buildResponse(sessionAttributes, speechletResponse));
+          });
+        break;
+
+      case REQ_INT:
+        console.log(util.inspect(event, false, null));
+        onIntent(event.request,
+          event.session, event.context,
+          function callback(sessionAttributes, speechletResponse) {
+            context.succeed(buildResponse(sessionAttributes, speechletResponse));
+          });
+        break;
+
+      case REQ_SESSION_END:
+        onSessionEnded(event.request, event.session);
+        context.succeed();
+        break;
+
+      default:
+
+    }
+  } catch (e) {
+    context.fail("Exception: " + e);
+  }
+};

@@ -4,8 +4,6 @@ const config = require("./config.js");
 const alexa = require("./index.js");
 const debug = require("./alexa-modules/Debug.js");
 
-http.createServer(onRequest).listen(config.port);
-
 function handleAlexaRequest(body_json, res, response_header) {
   alexa.server_handler(body_json, function (alexa_response) {
     var response_json = JSON.stringify(alexa_response);
@@ -19,7 +17,7 @@ function verifySignature(req, body_str, callback) {
   var cert_url = req.headers.signaturecertchainurl;
   var sig = req.headers.signature;
   verifier(cert_url, sig, body_str, function(error) {
-    if (error !== undefined) { callback([false, error]); }
+    if (typeof error !== "undefined") { callback([false, error]); }
     else { callback([true, null]); }
   });
 }
@@ -57,3 +55,5 @@ function onRequest(req, res) {
     });
   });
 }
+
+http.createServer(onRequest).listen(config.port);
