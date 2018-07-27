@@ -3,15 +3,6 @@ Card Manager for Alexa
 This module generates card for displaying.
 *********************************/
 
-module.exports = {
-  generateCardForStudentParking: generateCardForStudentParking,
-  generateCardForLotType: generateCardForLotType,
-  generateCardForWeather: generateCardForWeather,
-  generateCardForGoose: generateCardForGoose,
-  generateCardForLotName: generateCardForLotName,
-    generateCardForCourseInfo: generateCardForCourseInfo
-};
-
 function generateCardForLotName(data, intent) {
   var card = {};
   card.type = "Standard";
@@ -140,3 +131,9 @@ function generateCardForCourseInfo(data, intent) {
 
   return card;
 }
+
+module.exports = {
+  generateCardForStudentParking, generateCardForLotType,
+  generateCardForWeather, generateCardForGoose,
+  generateCardForLotName, generateCardForCourseInfo
+};
