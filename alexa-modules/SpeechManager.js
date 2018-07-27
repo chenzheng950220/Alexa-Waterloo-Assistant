@@ -4,16 +4,16 @@ This module generates complete sentences.
 *********************************/
 
 module.exports = {
-  generateSpeechForLotType: generateSpeechForLotType,
-  generateGeneralSpeech: generateGeneralSpeech,
-  generateSpeechForStudentParking: generateSpeechForStudentParking,
-  generateSpeechForDetailLotType: generateSpeechForDetailLotType,
-  generateSpeechForWeather: generateSpeechForWeather,
-  addSpeakTag: addSpeakTag,
-  generateSpeechForGoose: generateSpeechForGoose,
-  generateSpeechForLotName: generateSpeechForLotName,
-  generateSpeechForCourseInfo: generateSpeechForCourseInfo,
-  generateSpeechForCourseTermInfo: generateSpeechForCourseTermInfo
+  generateSpeechForLotType() generateSpeechForLotType,
+  generateGeneralSpeech() generateGeneralSpeech,
+  generateSpeechForStudentParking() generateSpeechForStudentParking,
+  generateSpeechForDetailLotType() generateSpeechForDetailLotType,
+  generateSpeechForWeather() generateSpeechForWeather,
+  addSpeakTag() addSpeakTag,
+  generateSpeechForGoose() generateSpeechForGoose,
+  generateSpeechForLotName() generateSpeechForLotName,
+  generateSpeechForCourseInfo() generateSpeechForCourseInfo,
+  generateSpeechForCourseTermInfo() generateSpeechForCourseTermInfo
 };
 
 const SPEECH_COURSE_EMPTY = "Sorry, but the course you requested does not exist. Maybe you gave me the wrong course subject or catelogue number. Could you repeat the question again? ";
@@ -45,17 +45,17 @@ const offered_season = {
 
 function generateGeneralSpeech() {
   const dict = {
-  SPEECH_ERROR: addSpeakTag(SPEECH_ERROR),
-  SPEECH_BAD_REQ: addSpeakTag(SPEECH_BAD_REQ),
-  SPEECH_BAD_REQ_TYPE: addSpeakTag(SPEECH_BAD_REQ_TYPE),
-  SPEECH_NO_RES_MORE_INFO: addSpeakTag(SPEECH_NO_RES_MORE_INFO),
-  SPEECH_NO_PREV_SESSION: addSpeakTag(SPEECH_NO_PREV_SESSION),
-  SPEECH_WELCOME: addSpeakTag(SPEECH_WELCOME),
-  SPEECH_LOT_INFO_MISS: addSpeakTag(SPEECH_LOT_INFO_MISS),
-  SPEECH_LOT_INFO_TWO: addSpeakTag(SPEECH_LOT_INFO_TWO),
-  SPEECH_HELP: addSpeakTag(SPEECH_HELP),
-  SPEECH_DB_ERROR: addSpeakTag(SPEECH_DB_ERROR),
-  SPEECH_DB_EMPTY: addSpeakTag(SPEECH_DB_EMPTY),
+    SPEECH_ERROR: addSpeakTag(SPEECH_ERROR),
+    SPEECH_BAD_REQ: addSpeakTag(SPEECH_BAD_REQ),
+    SPEECH_BAD_REQ_TYPE: addSpeakTag(SPEECH_BAD_REQ_TYPE),
+    SPEECH_NO_RES_MORE_INFO: addSpeakTag(SPEECH_NO_RES_MORE_INFO),
+    SPEECH_NO_PREV_SESSION: addSpeakTag(SPEECH_NO_PREV_SESSION),
+    SPEECH_WELCOME: addSpeakTag(SPEECH_WELCOME),
+    SPEECH_LOT_INFO_MISS: addSpeakTag(SPEECH_LOT_INFO_MISS),
+    SPEECH_LOT_INFO_TWO: addSpeakTag(SPEECH_LOT_INFO_TWO),
+    SPEECH_HELP: addSpeakTag(SPEECH_HELP),
+    SPEECH_DB_ERROR: addSpeakTag(SPEECH_DB_ERROR),
+    SPEECH_DB_EMPTY: addSpeakTag(SPEECH_DB_EMPTY),
     SPEECH_COURSE_BAD_REQ: addSpeakTag(SPEECH_COURSE_BAD_REQ),
     SPEECH_COURSE_EMPTY: addSpeakTag(SPEECH_COURSE_EMPTY)
   };
@@ -94,7 +94,7 @@ function generateSpeechForGoose(data, intent) {
 
 function generateSpeechForStudentParking(data, intent) {
   var speech_out = "";
-  var lot_name = ['C', 'N', 'W', 'X'];
+  var lot_name = ["C", "N", "W", "X"];
   var lot_status = assessStudentParking(data);
   var lot_overall_status = assessStudentOverallParking(lot_status);
 

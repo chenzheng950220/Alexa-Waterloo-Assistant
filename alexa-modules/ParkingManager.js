@@ -11,8 +11,8 @@ const debug = require("./Debug.js");
 const util = require("./Util.js");
 
 module.exports = {
-  getInfoForParkingLot: getInfoForParkingLot,
-  getStudentParkingInfo: getStudentParkingInfo
+  getInfoForParkingLot() getInfoForParkingLot,
+  getStudentParkingInfo() getStudentParkingInfo
 };
 
 function getStudentParkingInfo(callback, intent) {

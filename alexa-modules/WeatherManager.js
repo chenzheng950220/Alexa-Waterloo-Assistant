@@ -8,7 +8,7 @@ const card_manager = require("./CardManager.js");
 const speech_manager = require("./SpeechManager.js");
 
 module.exports = {
-  getWeatherInfo: getWeatherInfo
+  getWeatherInfo() getWeatherInfo
 };
 
 function getWeatherInfo(callback, intent) {
