@@ -160,7 +160,7 @@ function getInfoForParkingLot(callback, intent) { // get information for a parki
         ret_val.card = card_manager.generateCardForLotType(data, intent);
         ret_val.session_attr = data;
         callback (ret_val);
-    }
+      }
     }, request_type);
   }
 }

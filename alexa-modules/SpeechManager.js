@@ -67,12 +67,12 @@ function generateSpeechForLotName(data, intent) {
   const data_len = data.length;
 
   for (var i = 0; i < data_len; i++) {
-  const cur_data = data[i];
-  speech_out += ("Lot " + cur_data.lot_name + " is a " + cur_data.lot_type + " lot. ");
-  speech_out += ("Located at " + cur_data.description + ". ");
-  if (cur_data.additional_info) {
-    speech_out += (cur_data.additional_info + ". ");
-  }
+    const cur_data = data[i];
+    speech_out += ("Lot " + cur_data.lot_name + " is a " + cur_data.lot_type + " lot. ");
+    speech_out += ("Located at " + cur_data.description + ". ");
+    if (cur_data.additional_info) {
+      speech_out += (cur_data.additional_info + ". ");
+    }
   }
 
   return addSpeakTag(speech_out);
@@ -83,10 +83,12 @@ function generateSpeechForGoose(data, intent) {
   const goose_loc = data.data; const goose_num = goose_loc.length; 
   speech_out += ("There are " + goose_num + " goose watch alerts on campus. ");
   speech_out += ("Here is the full list. You can also refer to the card for all watch locations. ");
+  
   for (var i = 0; i < goose_num; i++) {
-  speech_out += goose_loc[i].location;
-  speech_out += "<break time=\"0.3s\"/>";
+    speech_out += goose_loc[i].location;
+    speech_out += "<break time=\"0.3s\"/>";
   }
+
   return addSpeakTag(speech_out);
 }
 
@@ -105,33 +107,35 @@ function generateSpeechForStudentParking(data, intent) {
   case 2:
     speech_out += "Student parking is tense right now. ";
     for (var i = 0; i < 4; i++) {
-    speech_out += ("Lot " + lot_name[i] + " ");
-    var remaining_spots = (data.data[i].capacity - data.data[i].current_count);
-    speech_out += ("has " + remaining_spots + " parking spots left. ");
+      speech_out += ("Lot " + lot_name[i] + " ");
+      var remaining_spots = (data.data[i].capacity - data.data[i].current_count);
+      speech_out += ("has " + remaining_spots + " parking spots left. ");
     }
     break;
 
   case 3:
     var full_lot = []; var not_full_lot = [];
     for (var j = 0; j < 4; j++) {
-    if (lot_status[j] >= 4) { full_lot.push(lot_name[j]); }
-    else { not_full_lot.push(lot_name[j]); }
+      if (lot_status[j] >= 4) { full_lot.push(lot_name[j]); }
+      else { not_full_lot.push(lot_name[j]); }
     }
+
     speech_out += "Lot ";
     for (var k = 0; k < full_lot.length; k++) {
-    speech_out += full_lot[k];
-    speech_out += ", ";
+      speech_out += full_lot[k];
+      speech_out += ", ";
     }
-    if (full_lot.length === 1) {
-    speech_out += "is ";
-    }
+
+    if (full_lot.length === 1) { speech_out += "is "; }
     else { speech_out += "are "; }
+
     speech_out += "full. However, there are still some parking capacities in lot ";
     for (var l = 0; l < not_full_lot.length; l++) {
-    speech_out += not_full_lot[l];
-    if (l === (not_full_lot.length - 1)) { speech_out += ". "; }
-    else { speech_out += ", "; }
+      speech_out += not_full_lot[l];
+      if (l === (not_full_lot.length - 1)) { speech_out += ". "; }
+      else { speech_out += ", "; }
     }
+
     break;
 
   case 4:
@@ -163,21 +167,21 @@ function generateSpeechForWeather(data,intent) {
   // temperature condition
   speech_out += ("Current temperature is " + cur_temp + " degrees. ");
   if (wind_chill !== null) {
-  speech_out += ("Wind chill is " + wind_chill + "degrees outside. ");
+    speech_out += ("Wind chill is " + wind_chill + "degrees outside. ");
   }
   speech_out += ("In the next 24 hours, highest will be " + high + " and lowest will be " + low + " degrees. ");
 
   // rain
   if (precip_15m > 1 && precip_1h > 1) {
-  speech_out += ("Rain persists for the next 1 hour. ");
+    speech_out += ("Rain persists for the next 1 hour. ");
   }
   else if (precip_15m > 1 && precip_1h < 1) {
-  speech_out += ("Rain will not in the next 1 hour. ");
+    speech_out += ("Rain will not in the next 1 hour. ");
   }
 
   // wind
   if (wind_speed > 10) {
-  speech_out += ("Strong wind is blowing outside. ");
+    speech_out += ("Strong wind is blowing outside. ");
   }
 
   return addSpeakTag(speech_out);
@@ -191,20 +195,20 @@ function assessStudentOverallParking(result) {
   // 1 -> normal
   var full = 0; var tense = 0; var normal = 0;
   for (var i = 0; i < total_lot; i++) {
-  if (result[i] >= 4) { full++; }
-  else if (result[i] === 3) {
-    tense++;
-  }
-  else if (result[i] <= 2) {
-    normal++;
-  }
+    if (result[i] >= 4) { full++; }
+    else if (result[i] === 3) {
+      tense++;
+    }
+    else if (result[i] <= 2) {
+      normal++;
+    }
   }
   if (full === total_lot) { return 4; }
-  else if (full !== 0) {
-  return 3;
+    else if (full !== 0) {
+    return 3;
   }
   else if (full === 0 && tense >= 3) {
-  return 2;
+    return 2;
   }
   else { return 1; }
 }
@@ -215,21 +219,21 @@ function assessStudentParking(data) {
   // X -> 1empty, 2normal, 3tense, 4almost full, 5full
   var total_lot = 4; var ret_val = [];
   for (var i = 0; i < total_lot; i++) {
-  if (data.data[i].percent_filled < 20) {
-    ret_val.push(1);
-  }
-  else if (data.data[i].percent_filled < 60) {
-    ret_val.push(2);
-  }
-  else if (data.data[i].percent_filled < 80) {
-    ret_val.push(3);
-  }
-  else if (data.data[i].percent_filled < 90) {
-    ret_val.push(4);
-  }
-  else {
-    ret_val.push(5);
-  }
+    if (data.data[i].percent_filled < 20) {
+      ret_val.push(1);
+    }
+    else if (data.data[i].percent_filled < 60) {
+      ret_val.push(2);
+    }
+    else if (data.data[i].percent_filled < 80) {
+      ret_val.push(3);
+    }
+    else if (data.data[i].percent_filled < 90) {
+      ret_val.push(4);
+    }
+    else {
+      ret_val.push(5);
+    }
   }
   return ret_val;
 }
@@ -245,8 +249,8 @@ function generateSpeechForLotType(data, intent) {
   speech_out += ("There are " + total_lot + " " + lot_type + " parking lots. ");
   speech_out += ("Lot " + "<break time=\"0.01s\"/>");
   for (var i = 0; i < total_lot; i++) {
-  speech_out += (data.data[i].name + ". ");
-  speech_out += "<break time=\"0.3s\"/>";
+    speech_out += (data.data[i].name + ". ");
+    speech_out += "<break time=\"0.3s\"/>";
   }
   speech_out += "You can also refer to the card for detailed information on each lot. ";
   speech_out += "But I can also read you those details, would you like to hear it? ";
@@ -258,7 +262,7 @@ function generateSpeechForDetailLotType(session_attr) {
   var speech_out = "";
   var total_lot = session_attr.data.length;
   for (var i = 0; i < total_lot; i++) {
-  speech_out += generateSpeechForSingleLot(session_attr.data[i]);
+    speech_out += generateSpeechForSingleLot(session_attr.data[i]);
   }
   return addSpeakTag(speech_out);
 }
@@ -267,7 +271,7 @@ function generateSpeechForSingleLot(lot_data) {
   var speech_out = "";
   speech_out += "Lot " + lot_data.name + ", " + lot_data.description + ". ";
   if (lot_data.additional_info !== undefined) {
-  speech_out += lot_data.additional_info + ". ";
+    speech_out += lot_data.additional_info + ". ";
   }
   return addSpeakTag(speech_out);
 }
@@ -276,15 +280,14 @@ function addSpeakTag(speech) {
   // Remodify the text, so that it satisfies SSML requirement
   var speech_len = speech.length;
   for (var i = 0; i < speech_len; i++) {
-  if (speech[i] === '&') {
-    speech = speech.substring(0, i) + " and " + speech.substring(i+1, speech_len);
-  }
-  else if (speech[i] === '/') {
-
-    if (i !== 0 && speech[i-1] === '<') { continue; }
-    if (i !== (speech_len-1) && speech[i+1] === '>') { continue; }
-    speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
-  }
+    if (speech[i] === '&') {
+      speech = speech.substring(0, i) + " and " + speech.substring(i+1, speech_len);
+    }
+    else if (speech[i] === '/') {
+      if (i !== 0 && speech[i-1] === '<') { continue; }
+      if (i !== (speech_len-1) && speech[i+1] === '>') { continue; }
+      speech = speech.substring(0, i) + " or " + speech.substring(i+1, speech_len);
+    }
   }
   return ("<speak> " + speech + "</speak>");
 }

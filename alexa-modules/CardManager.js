@@ -117,27 +117,26 @@ function generateCardForLotType(data, intent) {
 }
 
 function generateCardForCourseInfo(data, intent) {
-    const course_data = data.data;
-    const subject = course_data.subject;
-    const catelog = course_data.catalog_number;
-    const title = course_data.title;
-    const description = course_data.description;
-    const prereq = course_data.prerequisites;
-    const antireq = course_data.antirequisites;
-    const offered = course_data.terms_offered;
-    const notes = course_data.notes;
+  const course_data = data.data;
+  const subject = course_data.subject;
+  const catelog = course_data.catalog_number;
+  const title = course_data.title;
+  const description = course_data.description;
+  const prereq = course_data.prerequisites;
+  const antireq = course_data.antirequisites;
+  const offered = course_data.terms_offered;
+  const notes = course_data.notes;
 
-    var card = {};
-    card.type = "Standard";
-    card.title = (subject + " " + catelog + ": " + title);
-    card.text = "";
+  var card = {};
+  card.type = "Standard";
+  card.title = (subject + " " + catelog + ": " + title);
+  card.text = "";
 
-    card.text += (description + "\n");
-    if (prereq) { card.text += ("Prerequisites: " + prereq + "\n"); }
-    if (antireq) { card.text += ("Antirequisites: " + antireq + "\n"); }
-    if (offered.length) { card.text += ("Offered in: " + offered + "\n"); }
-    if (notes) { card.text += (notes + "\n"); }
+  card.text += (description + "\n");
+  if (prereq) { card.text += ("Prerequisites: " + prereq + "\n"); }
+  if (antireq) { card.text += ("Antirequisites: " + antireq + "\n"); }
+  if (offered.length) { card.text += ("Offered in: " + offered + "\n"); }
+  if (notes) { card.text += (notes + "\n"); }
 
-    return card;
-
+  return card;
 }

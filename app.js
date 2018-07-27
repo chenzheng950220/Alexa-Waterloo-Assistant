@@ -7,25 +7,21 @@ const debug = require('./alexa-modules/Debug.js');
 http.createServer(onRequest).listen(config.port);
 
 function handleAlexaRequest(body_json, res, response_header) {
-    alexa.server_handler(body_json, function (alexa_response) {
-        var response_json = JSON.stringify(alexa_response);
-        res.writeHead(200, "OK", response_header);
-        if (debug.debug_flag) { console.log(response_json); }
-        res.end(response_json); // write JSON response
-    });
+  alexa.server_handler(body_json, function (alexa_response) {
+    var response_json = JSON.stringify(alexa_response);
+    res.writeHead(200, "OK", response_header);
+    if (debug.debug_flag) { console.log(response_json); }
+    res.end(response_json); // write JSON response
+  });
 }
 
 function verifySignature(req, body_str, callback) {
-    var cert_url = req.headers.signaturecertchainurl;
-    var sig = req.headers.signature;
-    verifier(cert_url, sig, body_str, function(error) {
-        if (error !== undefined) {
-            callback([false, error]);
-        }
-        else {
-            callback([true, null]);
-        }
-    });
+  var cert_url = req.headers.signaturecertchainurl;
+  var sig = req.headers.signature;
+  verifier(cert_url, sig, body_str, function(error) {
+    if (error !== undefined) { callback([false, error]); }
+    else { callback([true, null]); }
+  });
 }
 
 function onRequest(req, res) {
