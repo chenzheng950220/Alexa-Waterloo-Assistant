@@ -3,9 +3,9 @@ Food Manager for Alexa
 This module coordinates goose watch information
 *********************************/
 
-const api_manager = require('./APIManager.js');
-const speech_manager = require('./SpeechManager.js');
-const card_manager = require('./CardManager.js');
+const api_manager = require("./APIManager.js");
+const speech_manager = require("./SpeechManager.js");
+const card_manager = require("./CardManager.js");
 
 module.exports = {
   getGooseInfo: getGooseInfo

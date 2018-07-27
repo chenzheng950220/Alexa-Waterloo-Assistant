@@ -4,7 +4,7 @@ API, and then update the info in the DynamoDB
 ***************************************/
 
 const AWS = require("aws-sdk");
-const request = require('request');
+const request = require("request");
 AWS.config.update({
   region: "us-east-1",
   endpoint: "https://dynamodb.us-east-1.amazonaws.com"
@@ -17,7 +17,7 @@ const base_url = "https://api.uwaterloo.ca/v2/parking/lots/";
 const token = "key=da4f8f38697f99b07a89ce05c3dcf755";
 
 function getUrl(type) {
-  return (base_url + type + '.json?' + token);
+  return (base_url + type + ".json?" + token);
 }
 
 function getData(type, callback) {

@@ -3,8 +3,8 @@ API Manager for Alexa
 This module fetches info from UW Open API
 *********************************/
 
-const request = require('request');
-const secret = require('./secret.js');
+const request = require("request");
+const secret = require("./secret.js");
 const base_url_parking = "https://api.uwaterloo.ca/v2/parking/";
 const base_url_weather = "https://api.uwaterloo.ca/v2/weather/current.json";
 const base_url_resources = "https://api.uwaterloo.ca/v2/resources/";

@@ -3,9 +3,9 @@ Weather Manager for Alexa
 This module coordinate with API to get weather information
 *********************************/
 
-const api_manager = require('./APIManager.js');
-const card_manager = require('./CardManager.js');
-const speech_manager = require('./SpeechManager.js');
+const api_manager = require("./APIManager.js");
+const card_manager = require("./CardManager.js");
+const speech_manager = require("./SpeechManager.js");
 
 module.exports = {
   getWeatherInfo: getWeatherInfo

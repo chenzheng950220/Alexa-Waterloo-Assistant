@@ -3,12 +3,12 @@ Parking Manager for Alexa
 This module manages info fetched from API
 *********************************/
 
-const api_manager = require('./APIManager.js');
-const speech_manager = require('./SpeechManager.js');
-const card_manager = require('./CardManager.js');
-const db_manager = require('./DBManager.js');
-const debug = require('./Debug.js');
-const util = require('./Util.js');
+const api_manager = require("./APIManager.js");
+const speech_manager = require("./SpeechManager.js");
+const card_manager = require("./CardManager.js");
+const db_manager = require("./DBManager.js");
+const debug = require("./Debug.js");
+const util = require("./Util.js");
 
 module.exports = {
   getInfoForParkingLot: getInfoForParkingLot,
@@ -155,7 +155,7 @@ function getInfoForParkingLot(callback, intent) { // get information for a parki
         callback(ret_val);
       }
       else {
-        ret_val.session_flag = false; // don't end session here
+        ret_val.session_flag = false; // do not end session here
         ret_val.speech_out += speech_manager.generateSpeechForLotType(data, intent);
         ret_val.card = card_manager.generateCardForLotType(data, intent);
         ret_val.session_attr = data;

@@ -9,7 +9,7 @@ module.exports = {
 };
 
 const AWS = require("aws-sdk");
-const request = require('request');
+const request = require("request");
 AWS.config.update({
   region: "us-east-1",
   endpoint: "https://dynamodb.us-east-1.amazonaws.com"

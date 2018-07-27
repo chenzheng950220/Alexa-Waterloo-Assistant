@@ -1,13 +1,13 @@
-const Alexa = require('alexa-sdk');
-const util = require('util');
+const Alexa = require("alexa-sdk");
+const util = require("util");
 
-const APP_ID = 'amzn1.ask.skill.1db13f3d-b9b8-4cef-8145-b9086748dc9b';
-const SKILL_NAME = 'AlexaWatPark';
-const parking_manager = require('./alexa-modules/ParkingManager.js');
-const speech_manager = require('./alexa-modules/SpeechManager.js');
-const weather_manager = require('./alexa-modules/WeatherManager.js');
-const goose_manager = require('./alexa-modules/GooseManager.js');
-const course_manager = require('./alexa-modules/CourseManager.js');
+const APP_ID = "amzn1.ask.skill.1db13f3d-b9b8-4cef-8145-b9086748dc9b";
+const SKILL_NAME = "AlexaWatPark";
+const parking_manager = require("./alexa-modules/ParkingManager.js");
+const speech_manager = require("./alexa-modules/SpeechManager.js");
+const weather_manager = require("./alexa-modules/WeatherManager.js");
+const goose_manager = require("./alexa-modules/GooseManager.js");
+const course_manager = require("./alexa-modules/CourseManager.js");
 
 const REQ_LAUNCH = "LaunchRequest";
 const REQ_INT = "IntentRequest";

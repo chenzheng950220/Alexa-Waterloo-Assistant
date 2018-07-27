@@ -1,8 +1,8 @@
-const http = require('http');
-const verifier = require('alexa-verifier');
-const config = require('./config.js');
-const alexa = require('./index.js');
-const debug = require('./alexa-modules/Debug.js');
+const http = require("http");
+const verifier = require("alexa-verifier");
+const config = require("./config.js");
+const alexa = require("./index.js");
+const debug = require("./alexa-modules/Debug.js");
 
 http.createServer(onRequest).listen(config.port);
 
@@ -31,9 +31,9 @@ function onRequest(req, res) {
 
   // verify authentication of the request
   var body = []; var body_str; var body_json;
-  req.on('data', function(chunk) {
+  req.on("data", function(chunk) {
     body.push(chunk);
-  }).on('end', function () {
+  }).on("end", function () {
     body_str = Buffer.concat(body).toString();
     if (debug.debug_flag) { console.log(body_str); }
     try {
