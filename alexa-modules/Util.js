@@ -5,7 +5,7 @@ Handy function that might be used
 const debug = require("./Debug.js");
 
 module.exports = {
-  combineParkingLots() combineParkingLots
+  combineParkingLots: combineParkingLots
 };
 
 function combineParkingLots(data) {

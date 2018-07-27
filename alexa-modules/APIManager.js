@@ -13,7 +13,7 @@ const parking_request_types = ["watpark", "meter", "permit", "visitor",
   "shortterm", "accessible", "motorcycle"];
 
 module.exports = {
-  getJSON() getJSON
+  getJSON: getJSON
 };
 
 function getUrl(request_type) { // get appropriate url

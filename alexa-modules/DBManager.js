@@ -4,8 +4,8 @@ query, scan, update...
 ******************************/
 
 module.exports = {
-  queryLotNameContains() queryLotNameContains,
-  queryLotNameEquals() queryLotNameEquals
+  queryLotNameContains: queryLotNameContains,
+  queryLotNameEquals: queryLotNameEquals
 };
 
 const AWS = require("aws-sdk");
