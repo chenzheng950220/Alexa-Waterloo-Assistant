@@ -223,8 +223,8 @@ function buildSpeechletResponseSession(card, output, session_end) {
 function buildResponse(sessionAttributes, speechletResponse) {
   return {
     version: "1.0",
-    sessionAttributes() sessionAttributes,
-    response() speechletResponse
+    sessionAttributes: sessionAttributes,
+    response: speechletResponse
   };
 }
 
